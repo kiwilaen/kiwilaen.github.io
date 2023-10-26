@@ -1,0 +1,217 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>代码随想录训练营Day2 | 双指针、滑动窗口 | 林重笑</title><meta name="author" content="林重笑"><meta name="copyright" content="林重笑"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="双指针4. 有序数组的平方 1234567891011121314151617181920212223class Solution &amp;#123;    public int[] sortedSquares(int[] nums) &amp;#123;    if(nums.length &#x3D;&#x3D;1)&amp;#123;        nums[0]&#x3D;nums[0]*nums[0];        return num">
+<meta property="og:type" content="article">
+<meta property="og:title" content="代码随想录训练营Day2 | 双指针、滑动窗口">
+<meta property="og:url" content="http://kiwilaee.com/2023/10/26/CalculatingCamp/day02_231026/index.html">
+<meta property="og:site_name" content="林重笑">
+<meta property="og:description" content="双指针4. 有序数组的平方 1234567891011121314151617181920212223class Solution &amp;#123;    public int[] sortedSquares(int[] nums) &amp;#123;    if(nums.length &#x3D;&#x3D;1)&amp;#123;        nums[0]&#x3D;nums[0]*nums[0];        return num">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://kiwilaee.com/img/Lars_geyin.jpg">
+<meta property="article:published_time" content="2023-10-26T09:23:56.157Z">
+<meta property="article:modified_time" content="2023-10-26T09:29:22.855Z">
+<meta property="article:author" content="林重笑">
+<meta property="article:tag" content="博客, 林重笑">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://kiwilaee.com/img/Lars_geyin.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://kiwilaee.com/2023/10/26/CalculatingCamp/day02_231026/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: 林重笑","link":"链接: ","source":"来源: 林重笑","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '代码随想录训练营Day2 | 双指针、滑动窗口',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-10-26 17:29:22'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/8dc0d7accfeaa410c1179f2654e9274.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/Lars01.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">林重笑</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">代码随想录训练营Day2 | 双指针、滑动窗口</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-10-26T09:23:56.157Z" title="发表于 2023-10-26 17:23:56">2023-10-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-10-26T09:29:22.855Z" title="更新于 2023-10-26 17:29:22">2023-10-26</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="代码随想录训练营Day2 | 双指针、滑动窗口"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="双指针"><a href="#双指针" class="headerlink" title="双指针"></a>双指针</h1><p><a target="_blank" rel="noopener" href="https://programmercarl.com/0977.%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E5%B9%B3%E6%96%B9.html">4. 有序数组的平方</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] sortedSquares(<span class="type">int</span>[] nums) &#123;</span><br><span class="line">    <span class="keyword">if</span>(nums.length ==<span class="number">1</span>)&#123;</span><br><span class="line">        nums[<span class="number">0</span>]=nums[<span class="number">0</span>]*nums[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">return</span> nums;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> <span class="variable">right</span> <span class="operator">=</span>nums.length-<span class="number">1</span>;</span><br><span class="line">    <span class="type">int</span>[]arr = <span class="keyword">new</span> <span class="title class_">int</span>[right+<span class="number">1</span>];</span><br><span class="line">    <span class="comment">//1.刚开始直接在原数组上面进行修改发现偶数长度的数组无法正确返回</span></span><br><span class="line">    <span class="comment">//2.一开始没有正确理解双指针的含义，将j和right混淆惹</span></span><br><span class="line">    <span class="comment">//i和j分别为左右指针，right为数组的下标，并new了一个新数组进行排序返回</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span><span class="number">0</span>,j = nums.length-<span class="number">1</span>;i&lt;=j;)&#123;</span><br><span class="line">        <span class="keyword">if</span>(nums[i]*nums[i] &lt; nums[j]*nums[j])&#123;</span><br><span class="line">            arr[right--] = nums[j]*nums[j];</span><br><span class="line">            j--;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            arr[right--] = nums[i] *nums[i];</span><br><span class="line">            i++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sortedSquares</span><span class="params">(nums []<span class="type">int</span>)</span></span> []<span class="type">int</span> &#123;</span><br><span class="line">    <span class="comment">//新建数组语法：make</span></span><br><span class="line">    <span class="built_in">len</span> := <span class="built_in">len</span>(nums)</span><br><span class="line">    ans := <span class="built_in">make</span>([]<span class="type">int</span>,<span class="built_in">len</span>)</span><br><span class="line">    i , j ,n := <span class="number">0</span>,<span class="built_in">len</span><span class="number">-1</span>,<span class="built_in">len</span><span class="number">-1</span></span><br><span class="line">    <span class="keyword">for</span>  ; i &lt;= j ; &#123;</span><br><span class="line">        lm,rm := nums[i]*nums[i] , nums[j]*nums[j]</span><br><span class="line">        <span class="keyword">if</span> lm &lt; rm &#123;</span><br><span class="line">            ans[n] = rm</span><br><span class="line">            j--</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            ans[n] = lm</span><br><span class="line">            i++</span><br><span class="line">        &#125;</span><br><span class="line">        n--</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>犯了一个错误：</strong></p>
+<ul>
+<li><p><code>ans := make([]int, len)</code> 创建了一个长度为 <code>len</code>，容量与长度相同的切片。这意味着切片的初始容量被设置为 <code>len</code>，并且切片中的所有元素都被初始化为整数类型的零值（0）。</p>
+</li>
+<li><p><code>ans := make([]int, 0, len)</code> 创建了一个长度为 0，容量为 <code>len</code> 的切片。这意味着切片的初始长度为 0，但其容量为 <code>len</code>。这样做的好处是可以在之后通过追加元素的方式动态地增加切片的长度，而不需要重新分配内存空间。</p>
+</li>
+</ul>
+<hr>
+<h1 id="滑动窗口"><a href="#滑动窗口" class="headerlink" title="滑动窗口"></a>滑动窗口</h1><p>文章：<a target="_blank" rel="noopener" href="https://programmercarl.com/0209.%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84.html#%E6%80%9D%E8%B7%AF">代码随想录 (programmercarl.com)</a></p>
+<p>视频：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1tZ4y1q7XE/?vd_source=fe1ab7bc4d5f8350163d042649287eb1">拿下滑动窗口！ | LeetCode 209 长度最小的子数组_哔哩哔哩_bilibili</a></p>
+<p>【收获】</p>
+<ul>
+<li><p>需要使用while来持续维持滑动窗口中sum的值小于目标值</p>
+</li>
+<li><p>滑动窗口的思想：使用一个for循环进行遍历，如何移动起始位置</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for( j  ...) //j指向的是终止位置</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">minSubArrayLen</span><span class="params">(<span class="type">int</span> target, <span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span> ;</span><br><span class="line">        <span class="type">int</span> <span class="variable">right</span> <span class="operator">=</span><span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">res</span> <span class="operator">=</span> nums.length+<span class="number">1</span>;<span class="comment">//修正：不会出现比数组长度还大的结果，所以不用初始化为Integer.MAX_VALUE</span></span><br><span class="line">        <span class="comment">//一开始混淆了j是终止位置的含义，把j当作是左指针，right当作右指针</span></span><br><span class="line">        <span class="comment">//后面返过去看了视频的伪代码之后发现，j为右指针，right是左指针</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span> ; j &lt; nums.length;j++)&#123;</span><br><span class="line">            sum += nums[j];</span><br><span class="line">            <span class="comment">//通过while来循环获取子串的最短长度</span></span><br><span class="line">            <span class="keyword">while</span>(sum &gt;= target)&#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> j - right +<span class="number">1</span>;</span><br><span class="line">                res = Math.min(res,len);</span><br><span class="line">                sum -= nums[right];</span><br><span class="line">                right++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res == nums.length+<span class="number">1</span>? <span class="number">0</span>:res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">minSubArrayLen</span><span class="params">(target <span class="type">int</span>, nums []<span class="type">int</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">    sum , ans := <span class="number">0</span>,<span class="built_in">len</span>(nums)+<span class="number">1</span> <span class="comment">//ans不会出现比数组长度还大的结果，所以初始化为len+1就很合适！</span></span><br><span class="line">    i,j := <span class="number">0</span>,<span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> ;j&lt;<span class="built_in">len</span>(nums);j++ &#123;</span><br><span class="line">        sum += nums[j]</span><br><span class="line">        <span class="keyword">for</span> target &lt;= sum &#123;</span><br><span class="line">            l := j - i + <span class="number">1</span></span><br><span class="line">            <span class="comment">//避免了写min函数的定义</span></span><br><span class="line">            <span class="keyword">if</span> ans &gt; l&#123;  <span class="comment">//取最小值，写的时候写反惹（哽住）</span></span><br><span class="line">                ans = l</span><br><span class="line">            &#125;</span><br><span class="line">            sum -= nums[i]</span><br><span class="line">            i++</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> ans == <span class="built_in">len</span>(nums)+<span class="number">1</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>【一条插播】</p>
+<p>![img](file:&#x2F;&#x2F;&#x2F;C:\Users\dzmbo\Documents\Tencent Files\2312593392\Image\C2C\L{_EW646C1K}$$TATGLB1Z1.png)</p>
+<p>第一百题终于达到啦~！虽然说现在已经大三了，一百题这个进度已经处于落后位置惹。</p>
+<p>但是没有关系！从现在开始，一定能学好算法的！</p>
+<hr>
+<h1 id="螺旋矩阵"><a href="#螺旋矩阵" class="headerlink" title="螺旋矩阵"></a>螺旋矩阵</h1><p>文章：<a target="_blank" rel="noopener" href="https://programmercarl.com/0059.%E8%9E%BA%E6%97%8B%E7%9F%A9%E9%98%B5II.html">6. 螺旋矩阵II</a></p>
+<p>视频讲解：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1SL4y1N7mV/?vd_source=fe1ab7bc4d5f8350163d042649287eb1">一入循环深似海 | LeetCode：59.螺旋矩阵II_哔哩哔哩_bilibili</a></p>
+<p>遵循<strong>循环不变量原则</strong></p>
+<p>量：对边的每一条处理规则</p>
+<p>本题统一使用左闭右开的处理规则</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[][] generateMatrix(<span class="type">int</span> n) &#123;</span><br><span class="line">        <span class="type">int</span>[][]a = <span class="keyword">new</span> <span class="title class_">int</span>[n][n];</span><br><span class="line">        <span class="comment">//x y 用来放起始位置</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">start</span> <span class="operator">=</span><span class="number">0</span>; <span class="comment">//每次循环的开始点</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span><span class="number">1</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">loop</span> <span class="operator">=</span> <span class="number">0</span>;  <span class="comment">//新增维持while循环</span></span><br><span class="line">        <span class="comment">//int offset = 0;   和loop的功能一样的</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> n/<span class="number">2</span>;</span><br><span class="line">        <span class="type">int</span> i,j;<span class="comment">//ij提出来</span></span><br><span class="line">        <span class="keyword">while</span>(loop++ &lt; n/<span class="number">2</span>)&#123;</span><br><span class="line">            <span class="comment">//1-&gt;3横向</span></span><br><span class="line">            <span class="comment">//不是n-1,是减去边缘（边缘数值会变化）</span></span><br><span class="line">            <span class="keyword">for</span>(j =start;j &lt; n-loop;j++ )&#123;</span><br><span class="line">                a[start][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//3-&gt;5竖向</span></span><br><span class="line">            <span class="keyword">for</span>(i=start ;i &lt; n-loop;i++)&#123;</span><br><span class="line">                a[i][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//5-&gt;7横向</span></span><br><span class="line">            <span class="comment">//不是&gt;=0,需要控制边缘</span></span><br><span class="line">            <span class="keyword">for</span>(;j &gt;= loop;j-- )&#123;</span><br><span class="line">                a[i][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//7-&gt;9竖向</span></span><br><span class="line">            <span class="comment">//不是&gt;=0,需要控制边缘</span></span><br><span class="line">            <span class="keyword">for</span>(;i &gt;=loop;i--)&#123;</span><br><span class="line">                a[i][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">/*startx++;</span></span><br><span class="line"><span class="comment">            starty++;</span></span><br><span class="line"><span class="comment">            loop--;</span></span><br><span class="line"><span class="comment">            offset+=1;*/</span></span><br><span class="line">            start++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(n%<span class="number">2</span> == <span class="number">1</span> )&#123;</span><br><span class="line">                a[mid][mid] = count;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">generateMatrix</span><span class="params">(n <span class="type">int</span>)</span></span> [][]<span class="type">int</span> &#123;</span><br><span class="line">	startx , starty := <span class="number">0</span>,<span class="number">0</span></span><br><span class="line">    <span class="comment">//对整型的赋值!</span></span><br><span class="line">    <span class="keyword">var</span> mid <span class="type">int</span> = n/<span class="number">2</span></span><br><span class="line">    <span class="keyword">var</span> loop <span class="type">int</span> = n/<span class="number">2</span></span><br><span class="line">    offset := <span class="number">1</span></span><br><span class="line">    counts := <span class="number">1</span></span><br><span class="line">    <span class="comment">//声明</span></span><br><span class="line">    a := <span class="built_in">make</span>([][]<span class="type">int</span>,n)</span><br><span class="line">    <span class="comment">//完成对int[][]的初始化</span></span><br><span class="line">    <span class="keyword">for</span> i:=<span class="number">0</span>;i&lt;n;i++&#123;</span><br><span class="line">        a[i] = <span class="built_in">make</span>([]<span class="type">int</span>,n)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> loop &gt;<span class="number">0</span>&#123;</span><br><span class="line">        i,j := startx,starty</span><br><span class="line">        <span class="comment">//注意：该处不应该使用短变量声明:= ，因为我们要将j的值带出下列的函数体</span></span><br><span class="line">        <span class="keyword">for</span> j = starty;j &lt; n-offset ; j++&#123;  </span><br><span class="line">            a[startx][j] = counts</span><br><span class="line">            counts++</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> i = startx ; i &lt; n-offset;i++&#123;</span><br><span class="line">            a[i][j] = counts</span><br><span class="line">            counts++</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> ;j&gt;starty;j--&#123;</span><br><span class="line">            a[i][j] = counts</span><br><span class="line">            counts++</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> ;i&gt; startx;i--&#123;</span><br><span class="line">            a[i][j] = counts</span><br><span class="line">            counts++</span><br><span class="line">        &#125;</span><br><span class="line">        startx++</span><br><span class="line">        starty++</span><br><span class="line">        loop-- <span class="comment">//别写错惹</span></span><br><span class="line">        offset++</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//不要漏了</span></span><br><span class="line">    <span class="keyword">if</span>(n%<span class="number">2</span> ==<span class="number">1</span> )&#123;</span><br><span class="line">        a[mid][mid] = counts</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> a</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>【算法总结】</p>
+<ul>
+<li>双指针注意不要混淆左右指针的用途<ul>
+<li>涉及数组修改，可以考虑将值存储到新的数组里面，而不是在原数组的基础上修改</li>
+</ul>
+</li>
+<li>滑动窗口注意不要混淆初始指针和新增指针的用途<ul>
+<li>比较最小值时可以考虑将res初始化为len(nums)+1，因为值都不会比len(nums)+1大</li>
+</ul>
+</li>
+<li>螺旋数组需要<strong>分清每个变量的用途</strong>，<strong>清晰的控制数组边缘</strong>，while循环里面的<strong>每个变量要清楚其作用范围</strong></li>
+</ul>
+<p>【语言总结】</p>
+<ul>
+<li><pre><code> //声明
+    a := make([][]int,n)
+ //对整型的赋值!
+    var mid int = n/2
+    var loop int = n/2
+ 
+//注意：该处不应该使用短变量声明:= ，因为我们要将j的值带出下列的函数体
+    for j = starty;j &lt; n-offset ; j++&#123;  
+        a[startx][j] = counts
+        counts++
+    &#125;
+</code></pre>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://kiwilaee.com">林重笑</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://kiwilaee.com/2023/10/26/CalculatingCamp/day02_231026/">http://kiwilaee.com/2023/10/26/CalculatingCamp/day02_231026/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://kiwilaee.com" target="_blank">林重笑</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/Lars_geyin.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/10/25/CalculatingCamp/day01_231026/"><img class="next-cover" src="/img/3b964f73a5ac416a71e7e697e00f5e5.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">代码随想录训练营Day1 | 二分查找、移除元素</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/8dc0d7accfeaa410c1179f2654e9274.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">林重笑</div><div class="author-info__description">Nice To Meet You Here</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/kiwilaen"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/kiwilaen" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">今天也要加油鸭</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%8C%E6%8C%87%E9%92%88"><span class="toc-number">1.</span> <span class="toc-text">双指针</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3"><span class="toc-number">2.</span> <span class="toc-text">滑动窗口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%9E%BA%E6%97%8B%E7%9F%A9%E9%98%B5"><span class="toc-number">3.</span> <span class="toc-text">螺旋矩阵</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/10/26/CalculatingCamp/day02_231026/" title="代码随想录训练营Day2 | 双指针、滑动窗口"><img src="/img/Lars_geyin.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="代码随想录训练营Day2 | 双指针、滑动窗口"/></a><div class="content"><a class="title" href="/2023/10/26/CalculatingCamp/day02_231026/" title="代码随想录训练营Day2 | 双指针、滑动窗口">代码随想录训练营Day2 | 双指针、滑动窗口</a><time datetime="2023-10-26T09:23:56.157Z" title="发表于 2023-10-26 17:23:56">2023-10-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/10/25/CalculatingCamp/day01_231026/" title="代码随想录训练营Day1 | 二分查找、移除元素"><img src="/img/3b964f73a5ac416a71e7e697e00f5e5.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="代码随想录训练营Day1 | 二分查找、移除元素"/></a><div class="content"><a class="title" href="/2023/10/25/CalculatingCamp/day01_231026/" title="代码随想录训练营Day1 | 二分查找、移除元素">代码随想录训练营Day1 | 二分查找、移除元素</a><time datetime="2023-10-25T02:31:29.105Z" title="发表于 2023-10-25 10:31:29">2023-10-25</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2022/11/11/Blog03/List221111/" title="【TED演讲】当你一直沉迷于&quot;垃圾快乐&quot;时，自律和自虐也救不了你">【TED演讲】当你一直沉迷于&quot;垃圾快乐&quot;时，自律和自虐也救不了你</a><time datetime="2022-11-11T11:08:37.455Z" title="发表于 2022-11-11 19:08:37">2022-11-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/31/Blog02/List221031/" title="【TED英语演讲】Emily Levine_2018:我如何与 现实交朋友【高清版】 中英文对照)"><img src="/img/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20221021215023.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【TED英语演讲】Emily Levine_2018:我如何与 现实交朋友【高清版】 中英文对照)"/></a><div class="content"><a class="title" href="/2022/10/31/Blog02/List221031/" title="【TED英语演讲】Emily Levine_2018:我如何与 现实交朋友【高清版】 中英文对照)">【TED英语演讲】Emily Levine_2018:我如何与 现实交朋友【高清版】 中英文对照)</a><time datetime="2022-10-31T01:54:31.545Z" title="发表于 2022-10-31 09:54:31">2022-10-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/22/cet6%20Pre/essay-1/" title="Liz Truss is Britain's shortest-serving prime minister"><img src="/img/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20221021215023.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Liz Truss is Britain's shortest-serving prime minister"/></a><div class="content"><a class="title" href="/2022/10/22/cet6%20Pre/essay-1/" title="Liz Truss is Britain's shortest-serving prime minister">Liz Truss is Britain's shortest-serving prime minister</a><time datetime="2022-10-22T08:27:55.142Z" title="发表于 2022-10-22 16:27:55">2022-10-22</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By 林重笑</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="95,158,160" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>
