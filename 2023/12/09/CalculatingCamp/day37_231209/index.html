@@ -1,0 +1,237 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>代码随想录训练营第三十七天 | 单调递增的数字&amp;&amp;*监控二叉树&amp;&amp;贪心总结 | 林重笑</title><meta name="author" content="林重笑"><meta name="copyright" content="林重笑"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="代码随想录训练营第三十七天 | 单调递增的数字&amp;&amp;*监控二叉树&amp;&amp;贪心总结738.单调递增的数字文章：22. 单调递增的数字 题目：738. 单调递增的数字 【思路】 从后往前遍历，这样可以避开从前往后时出现前一位比后两位的数字小的问题。 332-&gt;329-&gt;299 循环的起始点是比较倒数第二位（i）和倒数第一位（i-1）的数值  Java实现  123">
+<meta property="og:type" content="article">
+<meta property="og:title" content="代码随想录训练营第三十七天 | 单调递增的数字&amp;&amp;*监控二叉树&amp;&amp;贪心总结">
+<meta property="og:url" content="http://kiwilaee.com/2023/12/09/CalculatingCamp/day37_231209/index.html">
+<meta property="og:site_name" content="林重笑">
+<meta property="og:description" content="代码随想录训练营第三十七天 | 单调递增的数字&amp;&amp;*监控二叉树&amp;&amp;贪心总结738.单调递增的数字文章：22. 单调递增的数字 题目：738. 单调递增的数字 【思路】 从后往前遍历，这样可以避开从前往后时出现前一位比后两位的数字小的问题。 332-&gt;329-&gt;299 循环的起始点是比较倒数第二位（i）和倒数第一位（i-1）的数值  Java实现  123">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://kiwilaee.com/img/Lars/Lars_231209.jpg">
+<meta property="article:published_time" content="2023-12-09T12:48:18.179Z">
+<meta property="article:modified_time" content="2023-12-09T12:49:31.351Z">
+<meta property="article:author" content="林重笑">
+<meta property="article:tag" content="博客, 林重笑">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://kiwilaee.com/img/Lars/Lars_231209.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://kiwilaee.com/2023/12/09/CalculatingCamp/day37_231209/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: 林重笑","link":"链接: ","source":"来源: 林重笑","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '代码随想录训练营第三十七天 | 单调递增的数字&&*监控二叉树&&贪心总结',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-12-09 20:49:31'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/8dc0d7accfeaa410c1179f2654e9274.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">40</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/Lars/Lars06.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">林重笑</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">代码随想录训练营第三十七天 | 单调递增的数字&amp;&amp;*监控二叉树&amp;&amp;贪心总结</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-12-09T12:48:18.179Z" title="发表于 2023-12-09 20:48:18">2023-12-09</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-12-09T12:49:31.351Z" title="更新于 2023-12-09 20:49:31">2023-12-09</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="代码随想录训练营第三十七天 | 单调递增的数字&amp;&amp;*监控二叉树&amp;&amp;贪心总结"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="代码随想录训练营第三十七天-单调递增的数字-amp-amp-监控二叉树-amp-amp-贪心总结"><a href="#代码随想录训练营第三十七天-单调递增的数字-amp-amp-监控二叉树-amp-amp-贪心总结" class="headerlink" title="代码随想录训练营第三十七天 | 单调递增的数字&amp;&amp;*监控二叉树&amp;&amp;贪心总结"></a>代码随想录训练营第三十七天 | 单调递增的数字&amp;&amp;*监控二叉树&amp;&amp;贪心总结</h1><h1 id="738-单调递增的数字"><a href="#738-单调递增的数字" class="headerlink" title="738.单调递增的数字"></a>738.单调递增的数字</h1><p>文章：<a target="_blank" rel="noopener" href="https://programmercarl.com/0738.%E5%8D%95%E8%B0%83%E9%80%92%E5%A2%9E%E7%9A%84%E6%95%B0%E5%AD%97.html">22. 单调递增的数字</a></p>
+<p>题目：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/monotone-increasing-digits/">738. 单调递增的数字</a></p>
+<p>【思路】</p>
+<p>从后往前遍历，这样可以避开从前往后时出现前一位比后两位的数字小的问题。</p>
+<p>332-&gt;329-&gt;299</p>
+<p>循环的起始点是比较倒数第二位（i）和倒数第一位（i-1）的数值</p>
+<ul>
+<li>Java实现</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">monotoneIncreasingDigits</span><span class="params">(<span class="type">int</span> n)</span> &#123;</span><br><span class="line">        <span class="comment">//题目给的是数字，我们需要将其转化为一个char数组方便我们对其进行后续的修改。</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> String.valueOf(n);</span><br><span class="line">        <span class="type">char</span>[] ch = s.toCharArray();</span><br><span class="line">        <span class="type">int</span> <span class="variable">start</span> <span class="operator">=</span> s.length();</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> s.length()-<span class="number">2</span>;i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">            <span class="keyword">if</span>(ch[i]&gt;ch[i+<span class="number">1</span>])&#123;</span><br><span class="line">                ch[i]--;</span><br><span class="line">                start=i+<span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> start;i&lt;s.length();i++)&#123;</span><br><span class="line">            ch[i] = <span class="string">&#x27;9&#x27;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Integer.parseInt(String.valueOf(ch));</span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Go实现</li>
+</ul>
+<p>int转string类型的函数是: <code>strconv.Itoa(num)</code></p>
+<p>string转int类型的函数是: <code>strconv.Atoi(string)</code></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">monotoneIncreasingDigits</span><span class="params">(n <span class="type">int</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">    s := strconv.Itoa(n)</span><br><span class="line">    ss := []<span class="type">byte</span>(s)</span><br><span class="line">    start := <span class="built_in">len</span>(ss)</span><br><span class="line">    <span class="keyword">for</span> i := <span class="built_in">len</span>(ss)<span class="number">-2</span>;i&gt;=<span class="number">0</span>;i--&#123;</span><br><span class="line">        <span class="keyword">if</span> ss[i] &gt; ss[i+<span class="number">1</span>]&#123;</span><br><span class="line">            ss[i]--</span><br><span class="line">            start = i+<span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> i := start;i &lt;<span class="built_in">len</span>(s);i++&#123;</span><br><span class="line">        ss[i] = <span class="string">&#x27;9&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    res,_ := strconv.Atoi(<span class="type">string</span>(ss))</span><br><span class="line">    <span class="keyword">return</span> res </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="968-监控二叉树"><a href="#968-监控二叉树" class="headerlink" title="968.监控二叉树"></a>968.监控二叉树</h1><p>文章：</p>
+<p>题目：</p>
+<p>【思路】</p>
+<ul>
+<li>Java实现</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Go实现</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="贪心算法总结篇"><a href="#贪心算法总结篇" class="headerlink" title="贪心算法总结篇"></a>贪心算法总结篇</h1><p>文章：<a target="_blank" rel="noopener" href="https://programmercarl.com/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93%E7%AF%87.html">24. 贪心算法总结篇</a></p>
+<p><strong>贪心：从局部最优推出全局最优</strong></p>
+<h2 id="贪心理论基础"><a href="#贪心理论基础" class="headerlink" title="贪心理论基础"></a>贪心理论基础</h2><p>在贪心系列开篇词<a target="_blank" rel="noopener" href="https://programmercarl.com/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80.html">关于贪心算法，你该了解这些！ (opens new window)</a>中，我们就讲解了大家对贪心的普遍疑惑。</p>
+<ol>
+<li>贪心很简单，就是常识？</li>
+</ol>
+<p>跟着一起刷题的录友们就会发现，贪心思路往往很巧妙，并不简单。</p>
+<ol>
+<li>贪心有没有固定的套路？</li>
+</ol>
+<p>贪心无套路，也没有框架之类的，需要多看多练培养感觉才能想到贪心的思路。</p>
+<ol>
+<li>究竟什么题目是贪心呢？</li>
+</ol>
+<p>Carl个人认为：如果找出局部最优并可以推出全局最优，就是贪心，如果局部最优都没找出来，就不是贪心，可能是单纯的模拟。（并不是权威解读，一家之辞哈）</p>
+<p>但我们也不用过于强调什么题目是贪心，什么不是贪心，那就太学术了，毕竟学会解题就行了。</p>
+<ol>
+<li>如何知道局部最优推出全局最优，有数学证明么？</li>
+</ol>
+<p>在做贪心题的过程中，如果再来一个数据证明，其实没有必要，手动模拟一下，如果找不出反例，就试试贪心。面试中，代码写出来跑过测试用例即可，或者自己能自圆其说理由就行了</p>
+<p>就像是 要用一下 1 + 1 &#x3D; 2，没有必要再证明一下 1 + 1 究竟为什么等于 2。（例子极端了点，但是这个道理）</p>
+<p>相信大家读完<a target="_blank" rel="noopener" href="https://programmercarl.com/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80.html">关于贪心算法，你该了解这些！ (opens new window)</a>，就对贪心有了一个基本的认识了。</p>
+<h2 id="贪心简单题"><a href="#贪心简单题" class="headerlink" title="#贪心简单题"></a><a target="_blank" rel="noopener" href="https://programmercarl.com/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93%E7%AF%87.html#%E8%B4%AA%E5%BF%83%E7%AE%80%E5%8D%95%E9%A2%98">#</a>贪心简单题</h2><p>以下三道题目就是简单题，大家会发现贪心感觉就是常识。是的，如下三道题目，就是靠常识，但我都具体分析了局部最优是什么，全局最优是什么，贪心也要贪的有理有据！</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://programmercarl.com/0455.%E5%88%86%E5%8F%91%E9%A5%BC%E5%B9%B2.html">贪心算法：分发饼干(opens new window)</a></li>
+<li><a target="_blank" rel="noopener" href="https://programmercarl.com/1005.K%E6%AC%A1%E5%8F%96%E5%8F%8D%E5%90%8E%E6%9C%80%E5%A4%A7%E5%8C%96%E7%9A%84%E6%95%B0%E7%BB%84%E5%92%8C.html">贪心算法：K次取反后最大化的数组和(opens new window)</a></li>
+<li><a target="_blank" rel="noopener" href="https://programmercarl.com/0860.%E6%9F%A0%E6%AA%AC%E6%B0%B4%E6%89%BE%E9%9B%B6.html">贪心算法：柠檬水找零(opens new window)</a></li>
+</ul>
+<h2 id="贪心中等题"><a href="#贪心中等题" class="headerlink" title="#贪心中等题"></a><a target="_blank" rel="noopener" href="https://programmercarl.com/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93%E7%AF%87.html#%E8%B4%AA%E5%BF%83%E4%B8%AD%E7%AD%89%E9%A2%98">#</a>贪心中等题</h2><p>贪心中等题，靠常识可能就有点想不出来了。开始初现贪心算法的难度与巧妙之处。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://programmercarl.com/0376.%E6%91%86%E5%8A%A8%E5%BA%8F%E5%88%97.html">贪心算法：摆动序列(opens new window)</a></li>
+<li><a target="_blank" rel="noopener" href="https://programmercarl.com/0738.%E5%8D%95%E8%B0%83%E9%80%92%E5%A2%9E%E7%9A%84%E6%95%B0%E5%AD%97.html">贪心算法：单调递增的数字(opens new window)</a></li>
+</ul>
+<h3 id="贪心解决股票问题"><a href="#贪心解决股票问题" class="headerlink" title="#贪心解决股票问题"></a><a target="_blank" rel="noopener" href="https://programmercarl.com/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93%E7%AF%87.html#%E8%B4%AA%E5%BF%83%E8%A7%A3%E5%86%B3%E8%82%A1%E7%A5%A8%E9%97%AE%E9%A2%98">#</a>贪心解决股票问题</h3><p>大家都知道股票系列问题是动规的专长，其实用贪心也可以解决，而且还不止就这两道题目，但这两道比较典型，我就拿来单独说一说</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://programmercarl.com/0122.%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAII.html">贪心算法：买卖股票的最佳时机II(opens new window)</a></li>
+<li><a target="_blank" rel="noopener" href="https://programmercarl.com/0714.%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA%E5%90%AB%E6%89%8B%E7%BB%AD%E8%B4%B9.html">贪心算法：买卖股票的最佳时机含手续费 (opens new window)</a>本题使用贪心算法比较绕，建议后面学习动态规划章节的时候，理解动规就好</li>
+</ul>
+<h3 id="两个维度权衡问题"><a href="#两个维度权衡问题" class="headerlink" title="#两个维度权衡问题"></a><a target="_blank" rel="noopener" href="https://programmercarl.com/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93%E7%AF%87.html#%E4%B8%A4%E4%B8%AA%E7%BB%B4%E5%BA%A6%E6%9D%83%E8%A1%A1%E9%97%AE%E9%A2%98">#</a>两个维度权衡问题</h3><p>在出现两个维度相互影响的情况时，两边一起考虑一定会顾此失彼，要先确定一个维度，再确定另一个一个维度。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://programmercarl.com/0135.%E5%88%86%E5%8F%91%E7%B3%96%E6%9E%9C.html">贪心算法：分发糖果(opens new window)</a></li>
+<li><a target="_blank" rel="noopener" href="https://programmercarl.com/0406.%E6%A0%B9%E6%8D%AE%E8%BA%AB%E9%AB%98%E9%87%8D%E5%BB%BA%E9%98%9F%E5%88%97.html">贪心算法：根据身高重建队列(opens new window)</a></li>
+</ul>
+<p>在讲解本题的过程中，还强调了编程语言的重要性，模拟插队的时候，使用C++中的list（链表）替代了vector(动态数组)，效率会高很多。</p>
+<p>所以在<a target="_blank" rel="noopener" href="https://programmercarl.com/%E6%A0%B9%E6%8D%AE%E8%BA%AB%E9%AB%98%E9%87%8D%E5%BB%BA%E9%98%9F%E5%88%97%EF%BC%88vector%E5%8E%9F%E7%90%86%E8%AE%B2%E8%A7%A3%EF%BC%89.html">贪心算法：根据身高重建队列（续集） (opens new window)</a>详细讲解了，为什么用list（链表）更快！</p>
+<p><strong>大家也要掌握自己所用的编程语言，理解其内部实现机制，这样才能写出高效的算法！</strong></p>
+<h2 id="贪心难题"><a href="#贪心难题" class="headerlink" title="#贪心难题"></a><a target="_blank" rel="noopener" href="https://programmercarl.com/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93%E7%AF%87.html#%E8%B4%AA%E5%BF%83%E9%9A%BE%E9%A2%98">#</a>贪心难题</h2><p>这里的题目如果没有接触过，其实是很难想到的，甚至接触过，也一时想不出来，所以题目不要做一遍，要多练！</p>
+<h3 id="贪心解决区间问题"><a href="#贪心解决区间问题" class="headerlink" title="#贪心解决区间问题"></a><a target="_blank" rel="noopener" href="https://programmercarl.com/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93%E7%AF%87.html#%E8%B4%AA%E5%BF%83%E8%A7%A3%E5%86%B3%E5%8C%BA%E9%97%B4%E9%97%AE%E9%A2%98">#</a>贪心解决区间问题</h3><p>关于区间问题，大家应该印象深刻，有一周我们专门讲解的区间问题，各种覆盖各种去重。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://programmercarl.com/0055.%E8%B7%B3%E8%B7%83%E6%B8%B8%E6%88%8F.html">贪心算法：跳跃游戏(opens new window)</a></li>
+<li><a target="_blank" rel="noopener" href="https://programmercarl.com/0045.%E8%B7%B3%E8%B7%83%E6%B8%B8%E6%88%8FII.html">贪心算法：跳跃游戏II(opens new window)</a></li>
+<li><a target="_blank" rel="noopener" href="https://programmercarl.com/0452.%E7%94%A8%E6%9C%80%E5%B0%91%E6%95%B0%E9%87%8F%E7%9A%84%E7%AE%AD%E5%BC%95%E7%88%86%E6%B0%94%E7%90%83.html">贪心算法：用最少数量的箭引爆气球(opens new window)</a></li>
+<li><a target="_blank" rel="noopener" href="https://programmercarl.com/0435.%E6%97%A0%E9%87%8D%E5%8F%A0%E5%8C%BA%E9%97%B4.html">贪心算法：无重叠区间(opens new window)</a></li>
+<li><a target="_blank" rel="noopener" href="https://programmercarl.com/0763.%E5%88%92%E5%88%86%E5%AD%97%E6%AF%8D%E5%8C%BA%E9%97%B4.html">贪心算法：划分字母区间(opens new window)</a></li>
+<li><a target="_blank" rel="noopener" href="https://programmercarl.com/0056.%E5%90%88%E5%B9%B6%E5%8C%BA%E9%97%B4.html">贪心算法：合并区间(opens new window)</a></li>
+</ul>
+<h3 id="其他难题"><a href="#其他难题" class="headerlink" title="#其他难题"></a><a target="_blank" rel="noopener" href="https://programmercarl.com/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93%E7%AF%87.html#%E5%85%B6%E4%BB%96%E9%9A%BE%E9%A2%98">#</a>其他难题</h3><p><a target="_blank" rel="noopener" href="https://programmercarl.com/0053.%E6%9C%80%E5%A4%A7%E5%AD%90%E5%BA%8F%E5%92%8C.html">贪心算法：最大子序和 (opens new window)</a>其实是动态规划的题目，但贪心性能更优，很多同学也是第一次发现贪心能比动规更优的题目。</p>
+<p><a target="_blank" rel="noopener" href="https://programmercarl.com/0134.%E5%8A%A0%E6%B2%B9%E7%AB%99.html">贪心算法：加油站 (opens new window)</a>可能以为是一道模拟题，但就算模拟其实也不简单，需要把while用的很娴熟。但其实是可以使用贪心给时间复杂度降低一个数量级。</p>
+<p>最后贪心系列压轴题目<a target="_blank" rel="noopener" href="https://programmercarl.com/0968.%E7%9B%91%E6%8E%A7%E4%BA%8C%E5%8F%89%E6%A0%91.html">贪心算法：我要监控二叉树！ (opens new window)</a>，不仅贪心的思路不好想，而且需要对二叉树的操作特别娴熟，这就是典型的交叉类难题了。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://kiwilaee.com">林重笑</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://kiwilaee.com/2023/12/09/CalculatingCamp/day37_231209/">http://kiwilaee.com/2023/12/09/CalculatingCamp/day37_231209/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://kiwilaee.com" target="_blank">林重笑</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/Lars/Lars_231209.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/12/10/CalculatingCamp/day38_231210/"><img class="prev-cover" src="/img/Lars/Lars_231210.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">代码随想录训练营第三十八天 | 动态规划基础理论&amp;&amp;斐波那契数列&amp;&amp;爬楼梯&amp;&amp;使用最小花费爬楼梯</div></div></a></div><div class="next-post pull-right"><a href="/2023/12/08/CalculatingCamp/day36_231208/"><img class="next-cover" src="/img/Lars/Lars_231208.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">代码随想录训练营第三十六天 | 无重叠区间&amp;&amp;划分字母区间&amp;&amp;合并区间</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/8dc0d7accfeaa410c1179f2654e9274.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">林重笑</div><div class="author-info__description">Nice To Meet You Here</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">40</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">hzhf_Lars</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95%E8%AE%AD%E7%BB%83%E8%90%A5%E7%AC%AC%E4%B8%89%E5%8D%81%E4%B8%83%E5%A4%A9-%E5%8D%95%E8%B0%83%E9%80%92%E5%A2%9E%E7%9A%84%E6%95%B0%E5%AD%97-amp-amp-%E7%9B%91%E6%8E%A7%E4%BA%8C%E5%8F%89%E6%A0%91-amp-amp-%E8%B4%AA%E5%BF%83%E6%80%BB%E7%BB%93"><span class="toc-number">1.</span> <span class="toc-text">代码随想录训练营第三十七天 | 单调递增的数字&amp;&amp;*监控二叉树&amp;&amp;贪心总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#738-%E5%8D%95%E8%B0%83%E9%80%92%E5%A2%9E%E7%9A%84%E6%95%B0%E5%AD%97"><span class="toc-number">2.</span> <span class="toc-text">738.单调递增的数字</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#968-%E7%9B%91%E6%8E%A7%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="toc-number">3.</span> <span class="toc-text">968.监控二叉树</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93%E7%AF%87"><span class="toc-number">4.</span> <span class="toc-text">贪心算法总结篇</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%AA%E5%BF%83%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80"><span class="toc-number">4.1.</span> <span class="toc-text">贪心理论基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%AA%E5%BF%83%E7%AE%80%E5%8D%95%E9%A2%98"><span class="toc-number">4.2.</span> <span class="toc-text">贪心简单题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%AA%E5%BF%83%E4%B8%AD%E7%AD%89%E9%A2%98"><span class="toc-number">4.3.</span> <span class="toc-text">贪心中等题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%AA%E5%BF%83%E8%A7%A3%E5%86%B3%E8%82%A1%E7%A5%A8%E9%97%AE%E9%A2%98"><span class="toc-number">4.3.1.</span> <span class="toc-text">贪心解决股票问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A4%E4%B8%AA%E7%BB%B4%E5%BA%A6%E6%9D%83%E8%A1%A1%E9%97%AE%E9%A2%98"><span class="toc-number">4.3.2.</span> <span class="toc-text">两个维度权衡问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%AA%E5%BF%83%E9%9A%BE%E9%A2%98"><span class="toc-number">4.4.</span> <span class="toc-text">贪心难题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%AA%E5%BF%83%E8%A7%A3%E5%86%B3%E5%8C%BA%E9%97%B4%E9%97%AE%E9%A2%98"><span class="toc-number">4.4.1.</span> <span class="toc-text">贪心解决区间问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E9%9A%BE%E9%A2%98"><span class="toc-number">4.4.2.</span> <span class="toc-text">其他难题</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/12/10/CalculatingCamp/day38_231210/" title="代码随想录训练营第三十八天 | 动态规划基础理论&amp;&amp;斐波那契数列&amp;&amp;爬楼梯&amp;&amp;使用最小花费爬楼梯"><img src="/img/Lars/Lars_231210.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="代码随想录训练营第三十八天 | 动态规划基础理论&amp;&amp;斐波那契数列&amp;&amp;爬楼梯&amp;&amp;使用最小花费爬楼梯"/></a><div class="content"><a class="title" href="/2023/12/10/CalculatingCamp/day38_231210/" title="代码随想录训练营第三十八天 | 动态规划基础理论&amp;&amp;斐波那契数列&amp;&amp;爬楼梯&amp;&amp;使用最小花费爬楼梯">代码随想录训练营第三十八天 | 动态规划基础理论&amp;&amp;斐波那契数列&amp;&amp;爬楼梯&amp;&amp;使用最小花费爬楼梯</a><time datetime="2023-12-10T14:51:40.337Z" title="发表于 2023-12-10 22:51:40">2023-12-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/12/09/CalculatingCamp/day37_231209/" title="代码随想录训练营第三十七天 | 单调递增的数字&amp;&amp;*监控二叉树&amp;&amp;贪心总结"><img src="/img/Lars/Lars_231209.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="代码随想录训练营第三十七天 | 单调递增的数字&amp;&amp;*监控二叉树&amp;&amp;贪心总结"/></a><div class="content"><a class="title" href="/2023/12/09/CalculatingCamp/day37_231209/" title="代码随想录训练营第三十七天 | 单调递增的数字&amp;&amp;*监控二叉树&amp;&amp;贪心总结">代码随想录训练营第三十七天 | 单调递增的数字&amp;&amp;*监控二叉树&amp;&amp;贪心总结</a><time datetime="2023-12-09T12:48:18.179Z" title="发表于 2023-12-09 20:48:18">2023-12-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/12/08/CalculatingCamp/day36_231208/" title="代码随想录训练营第三十六天 | 无重叠区间&amp;&amp;划分字母区间&amp;&amp;合并区间"><img src="/img/Lars/Lars_231208.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="代码随想录训练营第三十六天 | 无重叠区间&amp;&amp;划分字母区间&amp;&amp;合并区间"/></a><div class="content"><a class="title" href="/2023/12/08/CalculatingCamp/day36_231208/" title="代码随想录训练营第三十六天 | 无重叠区间&amp;&amp;划分字母区间&amp;&amp;合并区间">代码随想录训练营第三十六天 | 无重叠区间&amp;&amp;划分字母区间&amp;&amp;合并区间</a><time datetime="2023-12-08T14:51:45.004Z" title="发表于 2023-12-08 22:51:45">2023-12-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/12/01/CalculatingCamp/day35_231129/" title="代码随想录训练营第三十五天 | 柠檬酸找零&amp;&amp;根据身高重建的队列&amp;&amp;用最少数量的箭引爆气球"><img src="/img/Lars/Lars_231129.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="代码随想录训练营第三十五天 | 柠檬酸找零&amp;&amp;根据身高重建的队列&amp;&amp;用最少数量的箭引爆气球"/></a><div class="content"><a class="title" href="/2023/12/01/CalculatingCamp/day35_231129/" title="代码随想录训练营第三十五天 | 柠檬酸找零&amp;&amp;根据身高重建的队列&amp;&amp;用最少数量的箭引爆气球">代码随想录训练营第三十五天 | 柠檬酸找零&amp;&amp;根据身高重建的队列&amp;&amp;用最少数量的箭引爆气球</a><time datetime="2023-11-30T16:47:56.541Z" title="发表于 2023-12-01 00:47:56">2023-12-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/11/30/CalculatingCamp/day34_231128/" title="代码随想录训练营第三十四天 | k次取反后最大化的数组和&amp;&amp;加油站&amp;&amp;分发糖果"><img src="/img/Lars/Lars_231128.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="代码随想录训练营第三十四天 | k次取反后最大化的数组和&amp;&amp;加油站&amp;&amp;分发糖果"/></a><div class="content"><a class="title" href="/2023/11/30/CalculatingCamp/day34_231128/" title="代码随想录训练营第三十四天 | k次取反后最大化的数组和&amp;&amp;加油站&amp;&amp;分发糖果">代码随想录训练营第三十四天 | k次取反后最大化的数组和&amp;&amp;加油站&amp;&amp;分发糖果</a><time datetime="2023-11-30T13:56:26.653Z" title="发表于 2023-11-30 21:56:26">2023-11-30</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By 林重笑</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="95,158,160" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>
