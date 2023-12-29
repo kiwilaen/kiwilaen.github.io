@@ -1,0 +1,230 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>代码随想录第四十八天 | 打家劫舍I&amp;&amp;打家劫舍II&amp;&amp;打家劫舍III | 林重笑</title><meta name="author" content="林重笑"><meta name="copyright" content="林重笑"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="198.打家劫舍文章;29. 打家劫舍 题目：198. 打家劫舍 【思路】 题目的特点：相邻的房屋装有相互连通的防盗系统。 1.确认数组及其下标含义 dp[i]：考虑下标（包括i）以内的房屋，最多可以偷窃的金额为dp[i] 2.确认递推公式 决定dp[i]的因素是第i房间偷还是不偷。 如果偷第i房间，那么dp[i] &#x3D; dp[i-2] + nums[i]，即：第i-1房是一定不考虑的，找">
+<meta property="og:type" content="article">
+<meta property="og:title" content="代码随想录第四十八天 | 打家劫舍I&amp;&amp;打家劫舍II&amp;&amp;打家劫舍III">
+<meta property="og:url" content="http://kiwilaee.com/2023/12/29/CalculatingCamp/day48_231229/index.html">
+<meta property="og:site_name" content="林重笑">
+<meta property="og:description" content="198.打家劫舍文章;29. 打家劫舍 题目：198. 打家劫舍 【思路】 题目的特点：相邻的房屋装有相互连通的防盗系统。 1.确认数组及其下标含义 dp[i]：考虑下标（包括i）以内的房屋，最多可以偷窃的金额为dp[i] 2.确认递推公式 决定dp[i]的因素是第i房间偷还是不偷。 如果偷第i房间，那么dp[i] &#x3D; dp[i-2] + nums[i]，即：第i-1房是一定不考虑的，找">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://kiwilaee.com/img/Lars/Lars_231229.jpg">
+<meta property="article:published_time" content="2023-12-29T10:18:05.981Z">
+<meta property="article:modified_time" content="2023-12-29T10:18:56.443Z">
+<meta property="article:author" content="林重笑">
+<meta property="article:tag" content="博客, 林重笑">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://kiwilaee.com/img/Lars/Lars_231229.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://kiwilaee.com/2023/12/29/CalculatingCamp/day48_231229/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: 林重笑","link":"链接: ","source":"来源: 林重笑","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '代码随想录第四十八天 | 打家劫舍I&&打家劫舍II&&打家劫舍III',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-12-29 18:18:56'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/8dc0d7accfeaa410c1179f2654e9274.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">49</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/Lars/Lars06.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">林重笑</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">代码随想录第四十八天 | 打家劫舍I&amp;&amp;打家劫舍II&amp;&amp;打家劫舍III</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-12-29T10:18:05.981Z" title="发表于 2023-12-29 18:18:05">2023-12-29</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-12-29T10:18:56.443Z" title="更新于 2023-12-29 18:18:56">2023-12-29</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="代码随想录第四十八天 | 打家劫舍I&amp;&amp;打家劫舍II&amp;&amp;打家劫舍III"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="198-打家劫舍"><a href="#198-打家劫舍" class="headerlink" title="198.打家劫舍"></a>198.打家劫舍</h1><p>文章;<a target="_blank" rel="noopener" href="https://programmercarl.com/0198.%E6%89%93%E5%AE%B6%E5%8A%AB%E8%88%8D.html">29. 打家劫舍</a></p>
+<p>题目：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/house-robber/">198. 打家劫舍</a></p>
+<p>【思路】</p>
+<p><strong>题目的特点：相邻的房屋装有相互连通的防盗系统。</strong></p>
+<p>1.确认数组及其下标含义</p>
+<p>dp[i]：考虑下标（包括i）以内的房屋，最多可以偷窃的金额为dp[i]</p>
+<p>2.确认递推公式</p>
+<p>决定dp[i]的因素是第i房间偷还是不偷。</p>
+<p>如果偷第i房间，那么dp[i] &#x3D; dp[i-2] + nums[i]，即：第i-1房是一定不考虑的，找出下标i-2（包括i-2）以内的房屋，最多可以偷窃的金额为dp[i-2]加上第i房间偷盗的钱。</p>
+<p>如果不偷第i房间，那么dp[i] &#x3D; dp[i-1]，即考虑i-1房，（<strong>注意这里是考虑，不是一定要偷i-1房</strong>）</p>
+<p><strong>dp[i] &#x3D; max(dp[i-2] + nums[i],dp[i-1])</strong></p>
+<p>3.dp数组如何初始化</p>
+<p>从递推公式dp[i] &#x3D; max(dp[i-2]+nums[i],dp[i-1])可以看出，递推公式的基础就是dp[0]和dp[1]</p>
+<p>从dp[i]的定义上来讲，dp[0]一定是nums[0]，dp[1]则是nums[0]和nums[1]的最大值：dp[1] &#x3D; max(dp[0] , dp[1])</p>
+<p>4.确定遍历顺序</p>
+<p>dp[i] 是 根据dp[i-2]和dp[i-1]推导出来的，那么一定是从前到后遍历。</p>
+<p>5.举例推导。。</p>
+<ul>
+<li>Java实现</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">rob</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(nums.length == <span class="number">1</span>)<span class="keyword">return</span> nums[<span class="number">0</span>];</span><br><span class="line">        <span class="type">int</span>[] dp = <span class="keyword">new</span> <span class="title class_">int</span>[nums.length];</span><br><span class="line">        dp[<span class="number">0</span>] = nums[<span class="number">0</span>];</span><br><span class="line">        dp[<span class="number">1</span>] = Math.max(nums[<span class="number">0</span>],nums[<span class="number">1</span>]);</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span><span class="number">2</span>;i&lt;nums.length;i++)&#123;</span><br><span class="line">            dp[i] = Math.max(dp[i-<span class="number">2</span>]+nums[i],dp[i-<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[nums.length-<span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Go实现</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">rob</span><span class="params">(nums []<span class="type">int</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">    <span class="built_in">len</span> := <span class="built_in">len</span>(nums)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span> == <span class="number">1</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> nums[<span class="number">0</span>]</span><br><span class="line">    &#125;</span><br><span class="line">    dp := <span class="built_in">make</span>([]<span class="type">int</span>,<span class="built_in">len</span>+<span class="number">1</span>)</span><br><span class="line">    dp[<span class="number">0</span>],dp[<span class="number">1</span>] = nums[<span class="number">0</span>],max(nums[<span class="number">0</span>],nums[<span class="number">1</span>])</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">2</span> ;i&lt;<span class="built_in">len</span>;i++&#123;</span><br><span class="line">        dp[i] = max(dp[i<span class="number">-1</span>],dp[i<span class="number">-2</span>]+nums[i])</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[<span class="built_in">len</span><span class="number">-1</span>]</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="213-打家劫舍II"><a href="#213-打家劫舍II" class="headerlink" title="213.打家劫舍II"></a>213.打家劫舍II</h1><p>文章：<a target="_blank" rel="noopener" href="https://programmercarl.com/0213.%E6%89%93%E5%AE%B6%E5%8A%AB%E8%88%8DII.html">30. 打家劫舍II</a></p>
+<p>题目：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/house-robber-ii/">213. House Robber II</a></p>
+<p>【思路】</p>
+<p><strong>本题重点：第一件屋子和最后一间屋子是紧挨的，且不能选取相邻的房屋。</strong></p>
+<p>本题的区别是成环。</p>
+<p>有三种情况：</p>
+<p>1.考虑不包括首尾元素</p>
+<p>2.考虑包括首元素，不包括尾元素</p>
+<p>3.考虑包含尾元素，不包含首元素</p>
+<p>而1的情况被2.3都包括了。因此只需要通过改变选择的下标获得二三情况的值，比较后返回即可。</p>
+<ul>
+<li>Java实现</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Go实现</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">rob</span><span class="params">(nums []<span class="type">int</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">    l := <span class="built_in">len</span>(nums)</span><br><span class="line">    <span class="keyword">if</span> l == <span class="number">1</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> nums[<span class="number">0</span>]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//区间没写对</span></span><br><span class="line">    <span class="keyword">return</span> max(rangeFunc(nums[:l<span class="number">-1</span>]),rangeFunc(nums[<span class="number">1</span>:]))</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">rangeFunc</span><span class="params">(nums []<span class="type">int</span>)</span></span><span class="type">int</span>&#123;</span><br><span class="line">    <span class="built_in">len</span> := <span class="built_in">len</span>(nums)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span> == <span class="number">1</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> nums[<span class="number">0</span>]</span><br><span class="line">    &#125;</span><br><span class="line">    dp := <span class="built_in">make</span>([]<span class="type">int</span>,<span class="built_in">len</span>)</span><br><span class="line">    dp[<span class="number">0</span>] = nums[<span class="number">0</span>]</span><br><span class="line">    dp[<span class="number">1</span>] = max(nums[<span class="number">0</span>],nums[<span class="number">1</span>])</span><br><span class="line">    <span class="keyword">for</span> i:=<span class="number">2</span>;i&lt;<span class="built_in">len</span>;i++&#123;</span><br><span class="line">        dp[i] = max(dp[i<span class="number">-1</span>],dp[i<span class="number">-2</span>]+nums[i])</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[<span class="built_in">len</span><span class="number">-1</span>]</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="337-打家劫舍III"><a href="#337-打家劫舍III" class="headerlink" title="337.打家劫舍III"></a>337.打家劫舍III</h1><p>文章：<a target="_blank" rel="noopener" href="https://programmercarl.com/0337.%E6%89%93%E5%AE%B6%E5%8A%AB%E8%88%8DIII.html">31. 打家劫舍III</a></p>
+<p>题目：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/house-robber-iii/">337. 打家劫舍 III</a></p>
+<p>【思路】</p>
+<p><strong>本题重点：遍历二叉树，相邻的二叉树不能重复选取</strong></p>
+<p><strong>遍历方式：后序遍历，因为要通过递归函数的返回值来做下一步计算。</strong></p>
+<p>如果我们采用递归回溯，其实是对一个节点偷与不偷得到的最大金钱都没有做记录，而是需要实时计算的。</p>
+<p>这动态规划其实是使用状态转移容器来记录状态的变化，这里可以使用一个长度为2的数组，记录当前节点偷与不偷所得到的最大金钱。</p>
+<p>树形dp。在树上进行状态转移。</p>
+<p>1.确定递归函数的参数和返回值。</p>
+<p>这里我们要求一个节点偷与不偷的两个状态所得到的金钱，那么返回值就是一个长度为2的数组。</p>
+<p>dp：下标为0，不偷；下标为1，偷</p>
+<p>所以本题dp数组就是一个长度为2的数组，递归的过程中，系统栈会保存每一层递归的参数。</p>
+<p>2.确定终止条件</p>
+<p>在递归过程中，如果遇到空节点，返回一个长度为2数值为0的空数组即可。</p>
+<p>3.确定遍历顺序</p>
+<p>首先明确的是使用后序遍历，因为要通过递归函数的返回值来做下一步计算。</p>
+<p>通过递归左节点，得到左节点偷与不偷的金钱。</p>
+<p>通过递归右节点，得到右节点偷与不偷的金钱。</p>
+<p>4.确定单层递归的逻辑</p>
+<p>如果偷当前节点，则左右孩子都不能偷，val1 &#x3D; cur.val + left[0] + right[0]</p>
+<p>如果不偷当前节点，则左右孩子可以偷，至于偷左边还是 偷右边一定是要选一个最大的，val2 &#x3D; max(left[0],left[1]) + max(right[0],right[1])</p>
+<p>最后当前节点的状态就是{val2 , val1}即：{不偷当前节点得到的最大金钱，偷当前节点得到的最大金钱}</p>
+<ul>
+<li>Java实现</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * public class TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode left;</span></span><br><span class="line"><span class="comment"> *     TreeNode right;</span></span><br><span class="line"><span class="comment"> *     TreeNode() &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int val) &#123; this.val = val; &#125;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int val, TreeNode left, TreeNode right) &#123;</span></span><br><span class="line"><span class="comment"> *         this.val = val;</span></span><br><span class="line"><span class="comment"> *         this.left = left;</span></span><br><span class="line"><span class="comment"> *         this.right = right;</span></span><br><span class="line"><span class="comment"> *     &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">rob</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">        <span class="type">int</span>[] res = action(root);</span><br><span class="line">        <span class="keyword">return</span> Math.max(res[<span class="number">0</span>],res[<span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] action(TreeNode node)&#123;</span><br><span class="line">        <span class="type">int</span>[] res = <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">2</span>];</span><br><span class="line">        <span class="keyword">if</span>(node == <span class="literal">null</span>)<span class="keyword">return</span> res;</span><br><span class="line">        <span class="type">int</span>[]left = action(node.left);</span><br><span class="line">        <span class="type">int</span>[] right = action(node.right);</span><br><span class="line"></span><br><span class="line">        res[<span class="number">0</span>] = Math.max(left[<span class="number">0</span>],left[<span class="number">1</span>]) + Math.max(right[<span class="number">0</span>],right[<span class="number">1</span>]);</span><br><span class="line">        res[<span class="number">1</span>] = node.val + left[<span class="number">0</span>] + right[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">return</span> res;    </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Go实现</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * type TreeNode struct &#123;</span></span><br><span class="line"><span class="comment"> *     Val int</span></span><br><span class="line"><span class="comment"> *     Left *TreeNode</span></span><br><span class="line"><span class="comment"> *     Right *TreeNode</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">rob</span><span class="params">(root *TreeNode)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">    res := action(root)</span><br><span class="line">    <span class="keyword">return</span> max(res[<span class="number">0</span>],res[<span class="number">1</span>])</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">action</span><span class="params">(node *TreeNode)</span></span>[]<span class="type">int</span>&#123;</span><br><span class="line">    res := <span class="built_in">make</span>([]<span class="type">int</span>,<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">if</span> node == <span class="literal">nil</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line">    &#125;</span><br><span class="line">    left := action(node.Left)</span><br><span class="line">    right := action(node.Right)</span><br><span class="line"></span><br><span class="line">    <span class="comment">//不偷：考虑偷左还是右</span></span><br><span class="line">    res[<span class="number">0</span>] = max(left[<span class="number">0</span>],left[<span class="number">1</span>]) + max(right[<span class="number">0</span>],right[<span class="number">1</span>])</span><br><span class="line">    res[<span class="number">1</span>] = node.Val + left[<span class="number">0</span>] + right[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="【算法总结】"><a href="#【算法总结】" class="headerlink" title="【算法总结】"></a>【算法总结】</h1><ul>
+<li>打家劫舍：三道题分别是数组、环形数组、二叉树的遍历。数组则是从前往后依次遍历，选取的数组下标范围不同。二叉树则是采用后序遍历，在得到返回值的基础上进行偷还是不偷的筛选，<strong>但是对于res[0]的选择还是不太理解了。</strong></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://kiwilaee.com">林重笑</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://kiwilaee.com/2023/12/29/CalculatingCamp/day48_231229/">http://kiwilaee.com/2023/12/29/CalculatingCamp/day48_231229/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://kiwilaee.com" target="_blank">林重笑</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/Lars/Lars_231229.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/12/27/CalculatingCamp/day46_231227/"><img class="next-cover" src="/img/something/Goblin_231227.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">代码随想录第四十六天 | 单词拆分&amp;&amp;多重背包&amp;&amp;背包问题总结篇</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/8dc0d7accfeaa410c1179f2654e9274.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">林重笑</div><div class="author-info__description">Nice To Meet You Here</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">49</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">hzhf_Lars</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#198-%E6%89%93%E5%AE%B6%E5%8A%AB%E8%88%8D"><span class="toc-number">1.</span> <span class="toc-text">198.打家劫舍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#213-%E6%89%93%E5%AE%B6%E5%8A%AB%E8%88%8DII"><span class="toc-number">2.</span> <span class="toc-text">213.打家劫舍II</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#337-%E6%89%93%E5%AE%B6%E5%8A%AB%E8%88%8DIII"><span class="toc-number">3.</span> <span class="toc-text">337.打家劫舍III</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E3%80%90%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93%E3%80%91"><span class="toc-number">4.</span> <span class="toc-text">【算法总结】</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/12/29/CalculatingCamp/day48_231229/" title="代码随想录第四十八天 | 打家劫舍I&amp;&amp;打家劫舍II&amp;&amp;打家劫舍III"><img src="/img/Lars/Lars_231229.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="代码随想录第四十八天 | 打家劫舍I&amp;&amp;打家劫舍II&amp;&amp;打家劫舍III"/></a><div class="content"><a class="title" href="/2023/12/29/CalculatingCamp/day48_231229/" title="代码随想录第四十八天 | 打家劫舍I&amp;&amp;打家劫舍II&amp;&amp;打家劫舍III">代码随想录第四十八天 | 打家劫舍I&amp;&amp;打家劫舍II&amp;&amp;打家劫舍III</a><time datetime="2023-12-29T10:18:05.981Z" title="发表于 2023-12-29 18:18:05">2023-12-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/12/27/CalculatingCamp/day46_231227/" title="代码随想录第四十六天 | 单词拆分&amp;&amp;多重背包&amp;&amp;背包问题总结篇"><img src="/img/something/Goblin_231227.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="代码随想录第四十六天 | 单词拆分&amp;&amp;多重背包&amp;&amp;背包问题总结篇"/></a><div class="content"><a class="title" href="/2023/12/27/CalculatingCamp/day46_231227/" title="代码随想录第四十六天 | 单词拆分&amp;&amp;多重背包&amp;&amp;背包问题总结篇">代码随想录第四十六天 | 单词拆分&amp;&amp;多重背包&amp;&amp;背包问题总结篇</a><time datetime="2023-12-27T12:48:26.850Z" title="发表于 2023-12-27 20:48:26">2023-12-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/12/27/CalculatingCamp/week3_231227/" title="代码随想录动态规划 | 小结一"><img src="/img/Lars/Lars_231227.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="代码随想录动态规划 | 小结一"/></a><div class="content"><a class="title" href="/2023/12/27/CalculatingCamp/week3_231227/" title="代码随想录动态规划 | 小结一">代码随想录动态规划 | 小结一</a><time datetime="2023-12-27T08:42:02.392Z" title="发表于 2023-12-27 16:42:02">2023-12-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/12/26/CalculatingCamp/day45_231226/" title="代码随想录第四十五天 | 爬楼梯（进阶）&amp;&amp;零钱兑换&amp;&amp;完全平方数"><img src="/img/Lars/Lars_231226_2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="代码随想录第四十五天 | 爬楼梯（进阶）&amp;&amp;零钱兑换&amp;&amp;完全平方数"/></a><div class="content"><a class="title" href="/2023/12/26/CalculatingCamp/day45_231226/" title="代码随想录第四十五天 | 爬楼梯（进阶）&amp;&amp;零钱兑换&amp;&amp;完全平方数">代码随想录第四十五天 | 爬楼梯（进阶）&amp;&amp;零钱兑换&amp;&amp;完全平方数</a><time datetime="2023-12-26T14:17:16.780Z" title="发表于 2023-12-26 22:17:16">2023-12-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/12/26/CalculatingCamp/day44_231226/" title="代码随想录第四十四天 | 完全背包&amp;&amp;零钱兑换II&amp;&amp;组合总和IV"><img src="/img/Lars/Lars_231226_1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="代码随想录第四十四天 | 完全背包&amp;&amp;零钱兑换II&amp;&amp;组合总和IV"/></a><div class="content"><a class="title" href="/2023/12/26/CalculatingCamp/day44_231226/" title="代码随想录第四十四天 | 完全背包&amp;&amp;零钱兑换II&amp;&amp;组合总和IV">代码随想录第四十四天 | 完全背包&amp;&amp;零钱兑换II&amp;&amp;组合总和IV</a><time datetime="2023-12-26T08:03:11.676Z" title="发表于 2023-12-26 16:03:11">2023-12-26</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By 林重笑</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="95,158,160" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>
