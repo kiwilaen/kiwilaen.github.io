@@ -1,0 +1,425 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>代码随想录第五十一天 | **最佳买卖股票时机含冷冻期&amp;&amp;买卖股票的最佳时期含手续费 | 林重笑</title><meta name="author" content="林重笑"><meta name="copyright" content="林重笑"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="309.最佳买卖股票时机含冷冻期文章：37. 最佳买卖股票时机含冷冻期 题目：309. 买卖股票的最佳时机含冷冻期 【思路】 在昨天的题目的基础上，本题加上了一个冷冻期(无法在第二天买入股票) 1.确定dp数组及其下标含义 dp[i] [j]：第i天状态为j，所剩的最多现金为dp[i] [j] 具体可以区分为四个状态 1：持有股票状态（今天买入股票，或者是之前就买入了股票然后没有操作，一直持有）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="代码随想录第五十一天 | **最佳买卖股票时机含冷冻期&amp;&amp;买卖股票的最佳时期含手续费">
+<meta property="og:url" content="http://kiwilaee.com/2024/01/02/CalculatingCamp/day51_240102/index.html">
+<meta property="og:site_name" content="林重笑">
+<meta property="og:description" content="309.最佳买卖股票时机含冷冻期文章：37. 最佳买卖股票时机含冷冻期 题目：309. 买卖股票的最佳时机含冷冻期 【思路】 在昨天的题目的基础上，本题加上了一个冷冻期(无法在第二天买入股票) 1.确定dp数组及其下标含义 dp[i] [j]：第i天状态为j，所剩的最多现金为dp[i] [j] 具体可以区分为四个状态 1：持有股票状态（今天买入股票，或者是之前就买入了股票然后没有操作，一直持有）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://kiwilaee.com/img/Lars/Lars_240102.jpg">
+<meta property="article:published_time" content="2024-01-02T11:56:05.181Z">
+<meta property="article:modified_time" content="2024-01-02T11:58:10.687Z">
+<meta property="article:author" content="林重笑">
+<meta property="article:tag" content="博客, 林重笑">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://kiwilaee.com/img/Lars/Lars_240102.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://kiwilaee.com/2024/01/02/CalculatingCamp/day51_240102/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: 林重笑","link":"链接: ","source":"来源: 林重笑","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '代码随想录第五十一天 | **最佳买卖股票时机含冷冻期&&买卖股票的最佳时期含手续费',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-01-02 19:58:10'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/8dc0d7accfeaa410c1179f2654e9274.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">52</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/Lars/Lars06.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">林重笑</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">代码随想录第五十一天 | **最佳买卖股票时机含冷冻期&amp;&amp;买卖股票的最佳时期含手续费</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-01-02T11:56:05.181Z" title="发表于 2024-01-02 19:56:05">2024-01-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-01-02T11:58:10.687Z" title="更新于 2024-01-02 19:58:10">2024-01-02</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="代码随想录第五十一天 | **最佳买卖股票时机含冷冻期&amp;&amp;买卖股票的最佳时期含手续费"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="309-最佳买卖股票时机含冷冻期"><a href="#309-最佳买卖股票时机含冷冻期" class="headerlink" title="309.最佳买卖股票时机含冷冻期"></a>309.最佳买卖股票时机含冷冻期</h1><p>文章：<a target="_blank" rel="noopener" href="https://programmercarl.com/0309.%E6%9C%80%E4%BD%B3%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E6%97%B6%E6%9C%BA%E5%90%AB%E5%86%B7%E5%86%BB%E6%9C%9F.html">37. 最佳买卖股票时机含冷冻期</a></p>
+<p>题目：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-cooldown/">309. 买卖股票的最佳时机含冷冻期</a></p>
+<p>【思路】</p>
+<p>在昨天的题目的基础上，本题加上了一个冷冻期(无法在第二天买入股票)</p>
+<p>1.确定dp数组及其下标含义</p>
+<p>dp[i] [j]：第i天状态为j，所剩的最多现金为dp[i] [j]</p>
+<p>具体可以区分为四个状态</p>
+<p>1：持有股票状态（今天买入股票，或者是之前就买入了股票然后没有操作，一直持有）</p>
+<p>2：保持卖出股票的状态（两天前就卖出了股票，度过了一天冷冻期，或者是前一天就是卖出股票的状态，一直没买入）</p>
+<p>3：今天卖出股票</p>
+<p>4：今天为冷冻期，但冷冻期状态不可持续，只有一天</p>
+<p>2.确定递推公式</p>
+<p><strong>达到买入股票状态</strong>（状态1）即：dp[i] [0]：</p>
+<p>操作一：前一天就是持有股票状态（状态一）,dp[i] [0] &#x3D; dp[i-1] [0]</p>
+<p>操作二：今天买入了，有两种情况</p>
+<ul>
+<li>前一天是冷冻期（状态四）,dp[i-1] [3] - prices[i]</li>
+<li>前一天是保持卖出股票的状态（状态二）：dp[i-1] [1]  -prices[i]</li>
+</ul>
+<p>dp[i] [0] &#x3D; max(dp[i-1] [0] , dp[i-1] [3] - prices[i] , dp[i-1] [1] - prices[i])</p>
+<p><strong>达到保持卖出股票状态</strong>（状态2）即：dp[i] [1]：</p>
+<p>操作一：前一天就是状态2</p>
+<p>操作二：前一天就是冷冻期（状态4）</p>
+<p>dp[i] [1] &#x3D; max(dp[i-1] [1]，dp[i-1] [3])</p>
+<p><strong>达到今天就卖出股票状态</strong>（状态3）即：dp[i] [2]：</p>
+<p>昨天一定是持有股票状态（状态1），今天卖出</p>
+<p>dp[i] [2] &#x3D; dp[i-1] [0] + prices[i]</p>
+<p><strong>达到冷冻期</strong>（状态4），即：dp[i] [3]：</p>
+<p>昨天卖出了股票（状态3）</p>
+<p>dp[i] [3] &#x3D; dp[i-1] [2]</p>
+<p>3.初始化数组</p>
+<p>主要是讨论第0天如何初始化</p>
+<p>如果是持有股票状态，一定是当天买入股票：dp[0] [0] &#x3D; -prices[0]</p>
+<p>保持卖出的状态，第0天无法卖出：dp[0] [1] &#x3D; 0、dp[0] [2] &#x3D; 0、dp[0] [3] &#x3D; 0</p>
+<p>4.确定遍历顺序</p>
+<p>dp[i] 依赖于dp[i-1]，因此是从前向后推导</p>
+<p>5.举例推导。。</p>
+<ul>
+<li>Java实现</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">maxProfit</span><span class="params">(<span class="type">int</span>[] prices)</span> &#123;</span><br><span class="line">        <span class="type">int</span>[][] dp = <span class="keyword">new</span> <span class="title class_">int</span>[prices.length][<span class="number">4</span>];</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] = -prices[<span class="number">0</span>];<span class="comment">//买入股票后的状态</span></span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">1</span>] = <span class="number">0</span>;<span class="comment">//没有买入股票的状态、卖出股票（不处于冰冻期）的状态</span></span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">2</span>] = <span class="number">0</span>;<span class="comment">//今天卖出股票</span></span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">3</span>] = <span class="number">0</span>;<span class="comment">//今天是冰冻期</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;prices.length;i++)&#123;</span><br><span class="line">            dp[i][<span class="number">0</span>] = Math.max(dp[i-<span class="number">1</span>][<span class="number">0</span>],Math.max(dp[i-<span class="number">1</span>][<span class="number">3</span>] - prices[i],dp[i-<span class="number">1</span>][<span class="number">1</span>] - prices[i]));<span class="comment">//(保持昨天的状态/冰冻期后买入股票/没有股票的情况下买入)</span></span><br><span class="line">            dp[i][<span class="number">1</span>] = Math.max(dp[i-<span class="number">1</span>][<span class="number">1</span>],dp[i-<span class="number">1</span>][<span class="number">3</span>]);<span class="comment">//（保持昨天状态/昨天是冰冻期）</span></span><br><span class="line">            dp[i][<span class="number">2</span>] = dp[i-<span class="number">1</span>][<span class="number">0</span>]+prices[i];<span class="comment">//（昨天买入股票+今天的股市）</span></span><br><span class="line">            dp[i][<span class="number">3</span>] = dp[i-<span class="number">1</span>][<span class="number">2</span>];<span class="comment">//(和卖出股票时的状态相同)</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Math.max(dp[prices.length-<span class="number">1</span>][<span class="number">3</span>],Math.max(dp[prices.length-<span class="number">1</span>][<span class="number">2</span>],dp[prices.length-<span class="number">1</span>][<span class="number">1</span>]));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Go实现</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">maxProfit</span><span class="params">(prices []<span class="type">int</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">    dp:=<span class="built_in">make</span>([][]<span class="type">int</span>,<span class="built_in">len</span>(prices))</span><br><span class="line">    <span class="keyword">for</span> i:=<span class="number">0</span>;i&lt;<span class="built_in">len</span>(dp);i++&#123;</span><br><span class="line">        dp[i] = <span class="built_in">make</span>([]<span class="type">int</span> ,<span class="number">4</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    dp[<span class="number">0</span>][<span class="number">0</span>] =-prices[<span class="number">0</span>]</span><br><span class="line">    dp[<span class="number">0</span>][<span class="number">1</span>],dp[<span class="number">0</span>][<span class="number">2</span>],dp[<span class="number">0</span>][<span class="number">3</span>] =<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i:=<span class="number">1</span>;i&lt;<span class="built_in">len</span>(dp);i++&#123;</span><br><span class="line">        dp[i][<span class="number">0</span>] = max(dp[i<span class="number">-1</span>][<span class="number">0</span>],max(dp[i<span class="number">-1</span>][<span class="number">3</span>] - prices[i],dp[i<span class="number">-1</span>][<span class="number">1</span>] - prices[i]))</span><br><span class="line">        dp[i][<span class="number">1</span>] = max(dp[i<span class="number">-1</span>][<span class="number">1</span>],dp[i<span class="number">-1</span>][<span class="number">3</span>])</span><br><span class="line">        dp[i][<span class="number">2</span>] = dp[i<span class="number">-1</span>][<span class="number">0</span>] + prices[i]</span><br><span class="line">        dp[i][<span class="number">3</span>] = dp[i<span class="number">-1</span>][<span class="number">2</span>]</span><br><span class="line">    &#125;</span><br><span class="line">    l := <span class="built_in">len</span>(dp)<span class="number">-1</span></span><br><span class="line">    <span class="keyword">return</span> max(dp[l][<span class="number">1</span>],max(dp[l][<span class="number">2</span>],dp[l][<span class="number">3</span>]))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="714-买卖股票的最佳时机含手续费"><a href="#714-买卖股票的最佳时机含手续费" class="headerlink" title="714.买卖股票的最佳时机含手续费"></a>714.买卖股票的最佳时机含手续费</h1><p>文章：<a target="_blank" rel="noopener" href="https://programmercarl.com/0714.%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA%E5%90%AB%E6%89%8B%E7%BB%AD%E8%B4%B9%EF%BC%88%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%89.html">39. 买卖股票的最佳时机含手续费</a></p>
+<p>题目：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/">714. 买卖股票的最佳时机含手续费</a></p>
+<p>【思路】</p>
+<p>和昨天的题目不一样的是<strong>本次买卖股票都需要交手续费</strong></p>
+<ul>
+<li>Java实现</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">maxProfit</span><span class="params">(<span class="type">int</span>[] prices, <span class="type">int</span> fee)</span> &#123;</span><br><span class="line">        <span class="type">int</span>[][] dp = <span class="keyword">new</span> <span class="title class_">int</span>[prices.length][<span class="number">2</span>];</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] = -prices[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; prices.length;i++)&#123;</span><br><span class="line">           dp[i][<span class="number">0</span>] = Math.max(dp[i-<span class="number">1</span>][<span class="number">0</span>],dp[i-<span class="number">1</span>][<span class="number">1</span>]-prices[i]);</span><br><span class="line">           dp[i][<span class="number">1</span>] = Math.max(dp[i-<span class="number">1</span>][<span class="number">0</span>]+prices[i]-fee,dp[i-<span class="number">1</span>][<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Math.max(dp[prices.length-<span class="number">1</span>][<span class="number">0</span>],dp[prices.length-<span class="number">1</span>][<span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Go实现</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">maxProfit</span><span class="params">(prices []<span class="type">int</span>, fee <span class="type">int</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">    dp:= <span class="built_in">make</span>([][]<span class="type">int</span>,<span class="built_in">len</span>(prices))</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="built_in">len</span>(dp);i++&#123;</span><br><span class="line">        dp[i] = <span class="built_in">make</span>([]<span class="type">int</span>,<span class="number">2</span>)</span><br><span class="line">    &#125;<span class="comment">//0是持有股票，1是没有</span></span><br><span class="line">    dp[<span class="number">0</span>][<span class="number">0</span>] = -prices[<span class="number">0</span>]</span><br><span class="line">    dp[<span class="number">0</span>][<span class="number">1</span>] = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i:=<span class="number">1</span>;i&lt;<span class="built_in">len</span>(dp);i++&#123;</span><br><span class="line">        dp[i][<span class="number">0</span>] = max(dp[i<span class="number">-1</span>][<span class="number">0</span>],dp[i<span class="number">-1</span>][<span class="number">1</span>]- prices[i])</span><br><span class="line">        dp[i][<span class="number">1</span>] = max(dp[i<span class="number">-1</span>][<span class="number">1</span>],dp[i<span class="number">-1</span>][<span class="number">0</span>]+prices[i]-fee)<span class="comment">//把fee隐藏在收益里面</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> max(dp[<span class="built_in">len</span>(dp)<span class="number">-1</span>][<span class="number">1</span>],dp[<span class="built_in">len</span>(dp)<span class="number">-1</span>][<span class="number">0</span>])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><h2 id="卖股票的最佳时机"><a href="#卖股票的最佳时机" class="headerlink" title="卖股票的最佳时机"></a>卖股票的最佳时机</h2><p><a target="_blank" rel="noopener" href="https://programmercarl.com/0121.%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA.html">动态规划：121.买卖股票的最佳时机 (opens new window)</a>，<strong>股票只能买卖一次，问最大利润</strong>。</p>
+<p>【贪心解法】</p>
+<p>取最左最小值，取最右最大值，那么得到的差值就是最大利润，代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> low = INT_MAX;</span><br><span class="line">        <span class="type">int</span> result = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; prices.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">            low = <span class="built_in">min</span>(low, prices[i]);  <span class="comment">// 取最左最小价格</span></span><br><span class="line">            result = <span class="built_in">max</span>(result, prices[i] - low); <span class="comment">// 直接取最大区间利润</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>【动态规划】</p>
+<ul>
+<li>dp[i][0] 表示第i天持有股票所得现金。</li>
+<li>dp[i][1] 表示第i天不持有股票所得现金。</li>
+</ul>
+<p>如果第i天持有股票即dp[i][0]， 那么可以由两个状态推出来</p>
+<ul>
+<li>第i-1天就持有股票，那么就保持现状，所得现金就是昨天持有股票的所得现金 即：dp[i - 1][0]</li>
+<li>第i天买入股票，所得现金就是买入今天的股票后所得现金即：-prices[i] 所以dp[i][0] &#x3D; max(dp[i - 1][0], -prices[i]);</li>
+</ul>
+<p>如果第i天不持有股票即dp[i][1]， 也可以由两个状态推出来</p>
+<ul>
+<li>第i-1天就不持有股票，那么就保持现状，所得现金就是昨天不持有股票的所得现金 即：dp[i - 1][1]</li>
+<li>第i天卖出股票，所得现金就是按照今天股票佳价格卖出后所得现金即：prices[i] + dp[i - 1][0] 所以dp[i][1] &#x3D; max(dp[i - 1][1], prices[i] + dp[i - 1][0]);</li>
+</ul>
+<p>代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 版本一</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> len = prices.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">if</span> (len == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">dp</span>(len, <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(<span class="number">2</span>));</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] -= prices[<span class="number">0</span>];</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; len; i++) &#123;</span><br><span class="line">            dp[i][<span class="number">0</span>] = <span class="built_in">max</span>(dp[i - <span class="number">1</span>][<span class="number">0</span>], -prices[i]);</span><br><span class="line">            dp[i][<span class="number">1</span>] = <span class="built_in">max</span>(dp[i - <span class="number">1</span>][<span class="number">1</span>], prices[i] + dp[i - <span class="number">1</span>][<span class="number">0</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[len - <span class="number">1</span>][<span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>时间复杂度：O(n)</li>
+<li>空间复杂度：O(n)</li>
+</ul>
+<p>使用滚动数组，代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 版本二</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> len = prices.<span class="built_in">size</span>();</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">dp</span>(<span class="number">2</span>, <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(<span class="number">2</span>)); <span class="comment">// 注意这里只开辟了一个2 * 2大小的二维数组</span></span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] -= prices[<span class="number">0</span>];</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; len; i++) &#123;</span><br><span class="line">            dp[i % <span class="number">2</span>][<span class="number">0</span>] = <span class="built_in">max</span>(dp[(i - <span class="number">1</span>) % <span class="number">2</span>][<span class="number">0</span>], -prices[i]);</span><br><span class="line">            dp[i % <span class="number">2</span>][<span class="number">1</span>] = <span class="built_in">max</span>(dp[(i - <span class="number">1</span>) % <span class="number">2</span>][<span class="number">1</span>], prices[i] + dp[(i - <span class="number">1</span>) % <span class="number">2</span>][<span class="number">0</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[(len - <span class="number">1</span>) % <span class="number">2</span>][<span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>时间复杂度：O(n)</li>
+<li>空间复杂度：O(1)</li>
+</ul>
+<h2 id="买卖股票的最佳时机II"><a href="#买卖股票的最佳时机II" class="headerlink" title="#买卖股票的最佳时机II"></a><a target="_blank" rel="noopener" href="https://programmercarl.com/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-%E8%82%A1%E7%A5%A8%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93%E7%AF%87.html#%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAii">#</a>买卖股票的最佳时机II</h2><p><a target="_blank" rel="noopener" href="https://programmercarl.com/0122.%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAII%EF%BC%88%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%89.html">动态规划：122.买卖股票的最佳时机II (opens new window)</a>可以多次买卖股票，问最大收益。</p>
+<p>【贪心解法】</p>
+<p>收集每天的正利润便可，代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> result = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; prices.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">            result += <span class="built_in">max</span>(prices[i] - prices[i - <span class="number">1</span>], <span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>时间复杂度：O(n)</li>
+<li>空间复杂度：O(1)</li>
+</ul>
+<p>【动态规划】</p>
+<p>dp数组定义：</p>
+<ul>
+<li>dp[i][0] 表示第i天持有股票所得现金</li>
+<li>dp[i][1] 表示第i天不持有股票所得最多现金</li>
+</ul>
+<p>如果第i天持有股票即dp[i][0]， 那么可以由两个状态推出来</p>
+<ul>
+<li>第i-1天就持有股票，那么就保持现状，所得现金就是昨天持有股票的所得现金 即：dp[i - 1][0]</li>
+<li>第i天买入股票，所得现金就是昨天不持有股票的所得现金减去 今天的股票价格 即：dp[i - 1][1] - prices[i]</li>
+</ul>
+<p><strong>注意这里和<a target="_blank" rel="noopener" href="https://programmercarl.com/0121.%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA.html">121. 买卖股票的最佳时机 (opens new window)</a>唯一不同的地方，就是推导dp[i][0]的时候，第i天买入股票的情况</strong>。</p>
+<p>在<a target="_blank" rel="noopener" href="https://programmercarl.com/0121.%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA.html">121. 买卖股票的最佳时机 (opens new window)</a>中，因为股票全程只能买卖一次，所以如果买入股票，那么第i天持有股票即dp[i][0]一定就是 -prices[i]。</p>
+<p>而本题，因为一只股票可以买卖多次，所以当第i天买入股票的时候，所持有的现金可能有之前买卖过的利润。</p>
+<p>代码如下：（注意代码中的注释，标记了和121.买卖股票的最佳时机唯一不同的地方）</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> len = prices.<span class="built_in">size</span>();</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">dp</span>(len, <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(<span class="number">2</span>, <span class="number">0</span>));</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] -= prices[<span class="number">0</span>];</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; len; i++) &#123;</span><br><span class="line">            dp[i][<span class="number">0</span>] = <span class="built_in">max</span>(dp[i - <span class="number">1</span>][<span class="number">0</span>], dp[i - <span class="number">1</span>][<span class="number">1</span>] - prices[i]); <span class="comment">// 注意这里是和121. 买卖股票的最佳时机唯一不同的地方。</span></span><br><span class="line">            dp[i][<span class="number">1</span>] = <span class="built_in">max</span>(dp[i - <span class="number">1</span>][<span class="number">1</span>], dp[i - <span class="number">1</span>][<span class="number">0</span>] + prices[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[len - <span class="number">1</span>][<span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>时间复杂度：O(n)</li>
+<li>空间复杂度：O(n)</li>
+</ul>
+<h2 id="买卖股票的最佳时机III"><a href="#买卖股票的最佳时机III" class="headerlink" title="#买卖股票的最佳时机III"></a><a target="_blank" rel="noopener" href="https://programmercarl.com/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-%E8%82%A1%E7%A5%A8%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93%E7%AF%87.html#%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAiii">#</a>买卖股票的最佳时机III</h2><p><a target="_blank" rel="noopener" href="https://programmercarl.com/0123.%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAIII.html">动态规划：123.买卖股票的最佳时机III (opens new window)</a>最多买卖两次，问最大收益。</p>
+<p>【动态规划】</p>
+<p>一天一共就有五个状态，</p>
+<ol>
+<li>没有操作</li>
+<li>第一次买入</li>
+<li>第一次卖出</li>
+<li>第二次买入</li>
+<li>第二次卖出</li>
+</ol>
+<p>dp[i][j]中 i表示第i天，j为 [0 - 4] 五个状态，dp[i][j]表示第i天状态j所剩最大现金。</p>
+<p>达到dp[i][1]状态，有两个具体操作：</p>
+<ul>
+<li>操作一：第i天买入股票了，那么dp[i][1] &#x3D; dp[i-1][0] - prices[i]</li>
+<li>操作二：第i天没有操作，而是沿用前一天买入的状态，即：dp[i][1] &#x3D; dp[i - 1][1]</li>
+</ul>
+<p>dp[i][1] &#x3D; max(dp[i-1][0] - prices[i], dp[i - 1][1]);</p>
+<p>同理dp[i][2]也有两个操作：</p>
+<ul>
+<li>操作一：第i天卖出股票了，那么dp[i][2] &#x3D; dp[i - 1][1] + prices[i]</li>
+<li>操作二：第i天没有操作，沿用前一天卖出股票的状态，即：dp[i][2] &#x3D; dp[i - 1][2]</li>
+</ul>
+<p>所以dp[i][2] &#x3D; max(dp[i - 1][1] + prices[i], dp[i - 1][2])</p>
+<p>同理可推出剩下状态部分：</p>
+<p>dp[i][3] &#x3D; max(dp[i - 1][3], dp[i - 1][2] - prices[i]);</p>
+<p>dp[i][4] &#x3D; max(dp[i - 1][4], dp[i - 1][3] + prices[i]);</p>
+<p>代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 版本一</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (prices.<span class="built_in">size</span>() == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">dp</span>(prices.<span class="built_in">size</span>(), <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(<span class="number">5</span>, <span class="number">0</span>));</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">1</span>] = -prices[<span class="number">0</span>];</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">3</span>] = -prices[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; prices.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">            dp[i][<span class="number">0</span>] = dp[i - <span class="number">1</span>][<span class="number">0</span>];</span><br><span class="line">            dp[i][<span class="number">1</span>] = <span class="built_in">max</span>(dp[i - <span class="number">1</span>][<span class="number">1</span>], dp[i - <span class="number">1</span>][<span class="number">0</span>] - prices[i]);</span><br><span class="line">            dp[i][<span class="number">2</span>] = <span class="built_in">max</span>(dp[i - <span class="number">1</span>][<span class="number">2</span>], dp[i - <span class="number">1</span>][<span class="number">1</span>] + prices[i]);</span><br><span class="line">            dp[i][<span class="number">3</span>] = <span class="built_in">max</span>(dp[i - <span class="number">1</span>][<span class="number">3</span>], dp[i - <span class="number">1</span>][<span class="number">2</span>] - prices[i]);</span><br><span class="line">            dp[i][<span class="number">4</span>] = <span class="built_in">max</span>(dp[i - <span class="number">1</span>][<span class="number">4</span>], dp[i - <span class="number">1</span>][<span class="number">3</span>] + prices[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[prices.<span class="built_in">size</span>() - <span class="number">1</span>][<span class="number">4</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>时间复杂度：O(n)</li>
+<li>空间复杂度：O(n × 5)</li>
+</ul>
+<p>当然，大家可以看到力扣官方题解里的一种优化空间写法，我这里给出对应的C++版本：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 版本二</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (prices.<span class="built_in">size</span>() == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">dp</span><span class="params">(<span class="number">5</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">        dp[<span class="number">1</span>] = -prices[<span class="number">0</span>];</span><br><span class="line">        dp[<span class="number">3</span>] = -prices[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; prices.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">            dp[<span class="number">1</span>] = <span class="built_in">max</span>(dp[<span class="number">1</span>], dp[<span class="number">0</span>] - prices[i]);</span><br><span class="line">            dp[<span class="number">2</span>] = <span class="built_in">max</span>(dp[<span class="number">2</span>], dp[<span class="number">1</span>] + prices[i]);</span><br><span class="line">            dp[<span class="number">3</span>] = <span class="built_in">max</span>(dp[<span class="number">3</span>], dp[<span class="number">2</span>] - prices[i]);</span><br><span class="line">            dp[<span class="number">4</span>] = <span class="built_in">max</span>(dp[<span class="number">4</span>], dp[<span class="number">3</span>] + prices[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[<span class="number">4</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>时间复杂度：O(n)</li>
+<li>空间复杂度：O(1)</li>
+</ul>
+<p><strong>这种写法看上去简单，其实思路很绕，不建议大家这么写，这么思考，很容易把自己绕进去！</strong> 对于本题，把版本一的写法研究明白，足以！</p>
+<h2 id="买卖股票的最佳时机IV"><a href="#买卖股票的最佳时机IV" class="headerlink" title="#买卖股票的最佳时机IV"></a><a target="_blank" rel="noopener" href="https://programmercarl.com/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-%E8%82%A1%E7%A5%A8%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93%E7%AF%87.html#%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAiv">#</a>买卖股票的最佳时机IV</h2><p><a target="_blank" rel="noopener" href="https://programmercarl.com/0188.%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAIV.html">动态规划：188.买卖股票的最佳时机IV (opens new window)</a>最多买卖k笔交易，问最大收益。</p>
+<p>使用二维数组 dp[i][j] ：第i天的状态为j，所剩下的最大现金是dp[i][j]</p>
+<p>j的状态表示为：</p>
+<ul>
+<li>0 表示不操作</li>
+<li>1 第一次买入</li>
+<li>2 第一次卖出</li>
+<li>3 第二次买入</li>
+<li>4 第二次卖出</li>
+<li>…..</li>
+</ul>
+<p><strong>除了0以外，偶数就是卖出，奇数就是买入</strong>。</p>
+<ol>
+<li>确定递推公式</li>
+</ol>
+<p>达到dp[i][1]状态，有两个具体操作：</p>
+<ul>
+<li>操作一：第i天买入股票了，那么dp[i][1] &#x3D; dp[i - 1][0] - prices[i]</li>
+<li>操作二：第i天没有操作，而是沿用前一天买入的状态，即：dp[i][1] &#x3D; dp[i - 1][1]</li>
+</ul>
+<p>dp[i][1] &#x3D; max(dp[i - 1][0] - prices[i], dp[i - 1][1]);</p>
+<p>同理dp[i][2]也有两个操作：</p>
+<ul>
+<li>操作一：第i天卖出股票了，那么dp[i][2] &#x3D; dp[i - 1][1] + prices[i]</li>
+<li>操作二：第i天没有操作，沿用前一天卖出股票的状态，即：dp[i][2] &#x3D; dp[i - 1][2]</li>
+</ul>
+<p>dp[i][2] &#x3D; max(dp[i - 1][1] + prices[i], dp[i - 1][2])</p>
+<p>同理可以类比剩下的状态，代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; <span class="number">2</span> * k - <span class="number">1</span>; j += <span class="number">2</span>) &#123;</span><br><span class="line">    dp[i][j + <span class="number">1</span>] = <span class="built_in">max</span>(dp[i - <span class="number">1</span>][j + <span class="number">1</span>], dp[i - <span class="number">1</span>][j] - prices[i]);</span><br><span class="line">    dp[i][j + <span class="number">2</span>] = <span class="built_in">max</span>(dp[i - <span class="number">1</span>][j + <span class="number">2</span>], dp[i - <span class="number">1</span>][j + <span class="number">1</span>] + prices[i]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>整体代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">maxProfit</span><span class="params">(<span class="type">int</span> k, vector&lt;<span class="type">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (prices.<span class="built_in">size</span>() == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">dp</span>(prices.<span class="built_in">size</span>(), <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(<span class="number">2</span> * k + <span class="number">1</span>, <span class="number">0</span>));</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt; <span class="number">2</span> * k; j += <span class="number">2</span>) &#123;</span><br><span class="line">            dp[<span class="number">0</span>][j] = -prices[<span class="number">0</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>;i &lt; prices.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; <span class="number">2</span> * k - <span class="number">1</span>; j += <span class="number">2</span>) &#123;</span><br><span class="line">                dp[i][j + <span class="number">1</span>] = <span class="built_in">max</span>(dp[i - <span class="number">1</span>][j + <span class="number">1</span>], dp[i - <span class="number">1</span>][j] - prices[i]);</span><br><span class="line">                dp[i][j + <span class="number">2</span>] = <span class="built_in">max</span>(dp[i - <span class="number">1</span>][j + <span class="number">2</span>], dp[i - <span class="number">1</span>][j + <span class="number">1</span>] + prices[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[prices.<span class="built_in">size</span>() - <span class="number">1</span>][<span class="number">2</span> * k];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>当然有的解法是定义一个三维数组dp[i][j][k]，第i天，第j次买卖，k表示买还是卖的状态，从定义上来讲是比较直观。但感觉三维数组操作起来有些麻烦，直接用二维数组来模拟三维数组的情况，代码看起来也清爽一些。</p>
+<h2 id="最佳买卖股票时机含冷冻期"><a href="#最佳买卖股票时机含冷冻期" class="headerlink" title="#最佳买卖股票时机含冷冻期"></a><a target="_blank" rel="noopener" href="https://programmercarl.com/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-%E8%82%A1%E7%A5%A8%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93%E7%AF%87.html#%E6%9C%80%E4%BD%B3%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E6%97%B6%E6%9C%BA%E5%90%AB%E5%86%B7%E5%86%BB%E6%9C%9F">#</a>最佳买卖股票时机含冷冻期</h2><p><a target="_blank" rel="noopener" href="https://programmercarl.com/0309.%E6%9C%80%E4%BD%B3%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E6%97%B6%E6%9C%BA%E5%90%AB%E5%86%B7%E5%86%BB%E6%9C%9F.html">动态规划：309.最佳买卖股票时机含冷冻期 (opens new window)</a>可以多次买卖但每次卖出有冷冻期1天。</p>
+<p>相对于<a target="_blank" rel="noopener" href="https://programmercarl.com/0122.%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAII%EF%BC%88%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%89.html">动态规划：122.买卖股票的最佳时机II (opens new window)</a>，本题加上了一个冷冻期。</p>
+<p>在<a target="_blank" rel="noopener" href="https://programmercarl.com/0122.%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAII%EF%BC%88%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%89.html">动态规划：122.买卖股票的最佳时机II (opens new window)</a>中有两个状态，持有股票后的最多现金，和不持有股票的最多现金。本题则可以花费为四个状态</p>
+<p>dp[i][j]：第i天状态为j，所剩的最多现金为dp[i][j]。</p>
+<p>具体可以区分出如下四个状态：</p>
+<ul>
+<li>状态一：买入股票状态（今天买入股票，或者是之前就买入了股票然后没有操作）</li>
+<li>卖出股票状态，这里就有两种卖出股票状态<ul>
+<li>状态二：两天前就卖出了股票，度过了冷冻期，一直没操作，今天保持卖出股票状态</li>
+<li>状态三：今天卖出了股票</li>
+</ul>
+</li>
+<li>状态四：今天为冷冻期状态，但冷冻期状态不可持续，只有一天！</li>
+</ul>
+<p>达到买入股票状态（状态一）即：dp[i][0]，有两个具体操作：</p>
+<ul>
+<li>操作一：前一天就是持有股票状态（状态一），dp[i][0] &#x3D; dp[i - 1][0]</li>
+<li>操作二：今天买入了，有两种情况<ul>
+<li>前一天是冷冻期（状态四），dp[i - 1][3] - prices[i]</li>
+<li>前一天是保持卖出股票状态（状态二），dp[i - 1][1] - prices[i]</li>
+</ul>
+</li>
+</ul>
+<p>所以操作二取最大值，即：max(dp[i - 1][3], dp[i - 1][1]) - prices[i]</p>
+<p>那么dp[i][0] &#x3D; max(dp[i - 1][0], max(dp[i - 1][3], dp[i - 1][1]) - prices[i]);</p>
+<p>达到保持卖出股票状态（状态二）即：dp[i][1]，有两个具体操作：</p>
+<ul>
+<li>操作一：前一天就是状态二</li>
+<li>操作二：前一天是冷冻期（状态四）</li>
+</ul>
+<p>dp[i][1] &#x3D; max(dp[i - 1][1], dp[i - 1][3]);</p>
+<p>达到今天就卖出股票状态（状态三），即：dp[i][2] ，只有一个操作：</p>
+<ul>
+<li>操作一：昨天一定是买入股票状态（状态一），今天卖出</li>
+</ul>
+<p>即：dp[i][2] &#x3D; dp[i - 1][0] + prices[i];</p>
+<p>达到冷冻期状态（状态四），即：dp[i][3]，只有一个操作：</p>
+<ul>
+<li>操作一：昨天卖出了股票（状态三）</li>
+</ul>
+<p>p[i][3] &#x3D; dp[i - 1][2];</p>
+<p>综上分析，递推代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dp[i][<span class="number">0</span>] = <span class="built_in">max</span>(dp[i - <span class="number">1</span>][<span class="number">0</span>], <span class="built_in">max</span>(dp[i - <span class="number">1</span>][<span class="number">3</span>]- prices[i], dp[i - <span class="number">1</span>][<span class="number">1</span>]) - prices[i];</span><br><span class="line">dp[i][<span class="number">1</span>] = <span class="built_in">max</span>(dp[i - <span class="number">1</span>][<span class="number">1</span>], dp[i - <span class="number">1</span>][<span class="number">3</span>]);</span><br><span class="line">dp[i][<span class="number">2</span>] = dp[i - <span class="number">1</span>][<span class="number">0</span>] + prices[i];</span><br><span class="line">dp[i][<span class="number">3</span>] = dp[i - <span class="number">1</span>][<span class="number">2</span>];</span><br></pre></td></tr></table></figure>
+
+<p>整体代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> n = prices.<span class="built_in">size</span>();</span><br><span class="line">        <span class="keyword">if</span> (n == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">dp</span>(n, <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(<span class="number">4</span>, <span class="number">0</span>));</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] -= prices[<span class="number">0</span>]; <span class="comment">// 持股票</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">            dp[i][<span class="number">0</span>] = <span class="built_in">max</span>(dp[i - <span class="number">1</span>][<span class="number">0</span>], <span class="built_in">max</span>(dp[i - <span class="number">1</span>][<span class="number">3</span>], dp[i - <span class="number">1</span>][<span class="number">1</span>]) - prices[i]);</span><br><span class="line">            dp[i][<span class="number">1</span>] = <span class="built_in">max</span>(dp[i - <span class="number">1</span>][<span class="number">1</span>], dp[i - <span class="number">1</span>][<span class="number">3</span>]);</span><br><span class="line">            dp[i][<span class="number">2</span>] = dp[i - <span class="number">1</span>][<span class="number">0</span>] + prices[i];</span><br><span class="line">            dp[i][<span class="number">3</span>] = dp[i - <span class="number">1</span>][<span class="number">2</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(dp[n - <span class="number">1</span>][<span class="number">3</span>],<span class="built_in">max</span>(dp[n - <span class="number">1</span>][<span class="number">1</span>], dp[n - <span class="number">1</span>][<span class="number">2</span>]));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>时间复杂度：O(n)</li>
+<li>空间复杂度：O(n)</li>
+</ul>
+<h2 id="买卖股票的最佳时机含手续费"><a href="#买卖股票的最佳时机含手续费" class="headerlink" title="#买卖股票的最佳时机含手续费"></a><a target="_blank" rel="noopener" href="https://programmercarl.com/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-%E8%82%A1%E7%A5%A8%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93%E7%AF%87.html#%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA%E5%90%AB%E6%89%8B%E7%BB%AD%E8%B4%B9">#</a>买卖股票的最佳时机含手续费</h2><p><a target="_blank" rel="noopener" href="https://programmercarl.com/0714.%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA%E5%90%AB%E6%89%8B%E7%BB%AD%E8%B4%B9%EF%BC%88%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%89.html">动态规划：714.买卖股票的最佳时机含手续费 (opens new window)</a>可以多次买卖，但每次有手续费。</p>
+<p>相对于<a target="_blank" rel="noopener" href="https://programmercarl.com/0122.%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAII%EF%BC%88%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%89.html">动态规划：122.买卖股票的最佳时机II (opens new window)</a>，本题只需要在计算卖出操作的时候减去手续费就可以了，代码几乎是一样的。</p>
+<p>唯一差别在于递推公式部分，所以本篇也就不按照动规五部曲详细讲解了，主要讲解一下递推公式部分。</p>
+<p>这里重申一下dp数组的含义：</p>
+<p>dp[i][0] 表示第i天持有股票所省最多现金。 dp[i][1] 表示第i天不持有股票所得最多现金</p>
+<p>如果第i天持有股票即dp[i][0]， 那么可以由两个状态推出来</p>
+<ul>
+<li>第i-1天就持有股票，那么就保持现状，所得现金就是昨天持有股票的所得现金 即：dp[i - 1][0]</li>
+<li>第i天买入股票，所得现金就是昨天不持有股票的所得现金减去 今天的股票价格 即：dp[i - 1][1] - prices[i]</li>
+</ul>
+<p>所以：dp[i][0] &#x3D; max(dp[i - 1][0], dp[i - 1][1] - prices[i]);</p>
+<p>在来看看如果第i天不持有股票即dp[i][1]的情况， 依然可以由两个状态推出来</p>
+<ul>
+<li>第i-1天就不持有股票，那么就保持现状，所得现金就是昨天不持有股票的所得现金 即：dp[i - 1][1]</li>
+<li>第i天卖出股票，所得现金就是按照今天股票价格卖出后所得现金，<strong>注意这里需要有手续费了</strong>即：dp[i - 1][0] + prices[i] - fee</li>
+</ul>
+<p>所以：dp[i][1] &#x3D; max(dp[i - 1][1], dp[i - 1][0] + prices[i] - fee);</p>
+<p><strong>本题和<a target="_blank" rel="noopener" href="https://programmercarl.com/0122.%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAII%EF%BC%88%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%89.html">动态规划：122.买卖股票的最佳时机II (opens new window)</a>的区别就是这里需要多一个减去手续费的操作</strong>。</p>
+<p>以上分析完毕，代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; prices, <span class="type">int</span> fee)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> n = prices.<span class="built_in">size</span>();</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">dp</span>(n, <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(<span class="number">2</span>, <span class="number">0</span>));</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] -= prices[<span class="number">0</span>]; <span class="comment">// 持股票</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">            dp[i][<span class="number">0</span>] = <span class="built_in">max</span>(dp[i - <span class="number">1</span>][<span class="number">0</span>], dp[i - <span class="number">1</span>][<span class="number">1</span>] - prices[i]);</span><br><span class="line">            dp[i][<span class="number">1</span>] = <span class="built_in">max</span>(dp[i - <span class="number">1</span>][<span class="number">1</span>], dp[i - <span class="number">1</span>][<span class="number">0</span>] + prices[i] - fee);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(dp[n - <span class="number">1</span>][<span class="number">0</span>], dp[n - <span class="number">1</span>][<span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>时间复杂度：O(n)</li>
+<li>空间复杂度：O(n)</li>
+</ul>
+<h2 id="总结-1"><a href="#总结-1" class="headerlink" title="#总结"></a><a target="_blank" rel="noopener" href="https://programmercarl.com/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-%E8%82%A1%E7%A5%A8%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93%E7%AF%87.html#%E6%80%BB%E7%BB%93">#</a>总结</h2><p>至此，股票系列正式剧终，全部讲解完毕！</p>
+<p>从买卖一次到买卖多次，从最多买卖两次到最多买卖k次，从冷冻期再到手续费，最后再来一个股票大总结，可以说对股票系列完美收官了。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://kiwilaee.com">林重笑</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://kiwilaee.com/2024/01/02/CalculatingCamp/day51_240102/">http://kiwilaee.com/2024/01/02/CalculatingCamp/day51_240102/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://kiwilaee.com" target="_blank">林重笑</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/Lars/Lars_240102.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/01/01/CalculatingCamp/day50_240101/"><img class="next-cover" src="/img/Lars/Lars_240101_1.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">代码随想录第五十天 | 买卖股票的最佳时机III&amp;&amp;**买卖股票的最佳时机IV</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/8dc0d7accfeaa410c1179f2654e9274.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">林重笑</div><div class="author-info__description">Nice To Meet You Here</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">52</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">仰望星空，脚踏实地</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#309-%E6%9C%80%E4%BD%B3%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E6%97%B6%E6%9C%BA%E5%90%AB%E5%86%B7%E5%86%BB%E6%9C%9F"><span class="toc-number">1.</span> <span class="toc-text">309.最佳买卖股票时机含冷冻期</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#714-%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA%E5%90%AB%E6%89%8B%E7%BB%AD%E8%B4%B9"><span class="toc-number">2.</span> <span class="toc-text">714.买卖股票的最佳时机含手续费</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA"><span class="toc-number">3.1.</span> <span class="toc-text">卖股票的最佳时机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAII"><span class="toc-number">3.2.</span> <span class="toc-text">买卖股票的最佳时机II</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAIII"><span class="toc-number">3.3.</span> <span class="toc-text">买卖股票的最佳时机III</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAIV"><span class="toc-number">3.4.</span> <span class="toc-text">买卖股票的最佳时机IV</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E4%BD%B3%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E6%97%B6%E6%9C%BA%E5%90%AB%E5%86%B7%E5%86%BB%E6%9C%9F"><span class="toc-number">3.5.</span> <span class="toc-text">最佳买卖股票时机含冷冻期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA%E5%90%AB%E6%89%8B%E7%BB%AD%E8%B4%B9"><span class="toc-number">3.6.</span> <span class="toc-text">买卖股票的最佳时机含手续费</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-1"><span class="toc-number">3.7.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/01/02/CalculatingCamp/day51_240102/" title="代码随想录第五十一天 | **最佳买卖股票时机含冷冻期&amp;&amp;买卖股票的最佳时期含手续费"><img src="/img/Lars/Lars_240102.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="代码随想录第五十一天 | **最佳买卖股票时机含冷冻期&amp;&amp;买卖股票的最佳时期含手续费"/></a><div class="content"><a class="title" href="/2024/01/02/CalculatingCamp/day51_240102/" title="代码随想录第五十一天 | **最佳买卖股票时机含冷冻期&amp;&amp;买卖股票的最佳时期含手续费">代码随想录第五十一天 | **最佳买卖股票时机含冷冻期&amp;&amp;买卖股票的最佳时期含手续费</a><time datetime="2024-01-02T11:56:05.181Z" title="发表于 2024-01-02 19:56:05">2024-01-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/01/CalculatingCamp/day50_240101/" title="代码随想录第五十天 | 买卖股票的最佳时机III&amp;&amp;**买卖股票的最佳时机IV"><img src="/img/Lars/Lars_240101_1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="代码随想录第五十天 | 买卖股票的最佳时机III&amp;&amp;**买卖股票的最佳时机IV"/></a><div class="content"><a class="title" href="/2024/01/01/CalculatingCamp/day50_240101/" title="代码随想录第五十天 | 买卖股票的最佳时机III&amp;&amp;**买卖股票的最佳时机IV">代码随想录第五十天 | 买卖股票的最佳时机III&amp;&amp;**买卖股票的最佳时机IV</a><time datetime="2024-01-01T13:32:36.250Z" title="发表于 2024-01-01 21:32:36">2024-01-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/01/CalculatingCamp/day49_240101/" title="代码随想录第四十九天 | (新年好^^)买卖股票的最佳时机&amp;&amp;买卖股票的最佳时机II"><img src="/img/Lars/Lars_240101.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="代码随想录第四十九天 | (新年好^^)买卖股票的最佳时机&amp;&amp;买卖股票的最佳时机II"/></a><div class="content"><a class="title" href="/2024/01/01/CalculatingCamp/day49_240101/" title="代码随想录第四十九天 | (新年好^^)买卖股票的最佳时机&amp;&amp;买卖股票的最佳时机II">代码随想录第四十九天 | (新年好^^)买卖股票的最佳时机&amp;&amp;买卖股票的最佳时机II</a><time datetime="2024-01-01T08:43:07.737Z" title="发表于 2024-01-01 16:43:07">2024-01-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/12/29/CalculatingCamp/day48_231229/" title="代码随想录第四十八天 | 打家劫舍I&amp;&amp;打家劫舍II&amp;&amp;打家劫舍III"><img src="/img/Lars/Lars_231229.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="代码随想录第四十八天 | 打家劫舍I&amp;&amp;打家劫舍II&amp;&amp;打家劫舍III"/></a><div class="content"><a class="title" href="/2023/12/29/CalculatingCamp/day48_231229/" title="代码随想录第四十八天 | 打家劫舍I&amp;&amp;打家劫舍II&amp;&amp;打家劫舍III">代码随想录第四十八天 | 打家劫舍I&amp;&amp;打家劫舍II&amp;&amp;打家劫舍III</a><time datetime="2023-12-29T10:18:05.981Z" title="发表于 2023-12-29 18:18:05">2023-12-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/12/27/CalculatingCamp/day46_231227/" title="代码随想录第四十六天 | 单词拆分&amp;&amp;多重背包&amp;&amp;背包问题总结篇"><img src="/img/something/Goblin_231227.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="代码随想录第四十六天 | 单词拆分&amp;&amp;多重背包&amp;&amp;背包问题总结篇"/></a><div class="content"><a class="title" href="/2023/12/27/CalculatingCamp/day46_231227/" title="代码随想录第四十六天 | 单词拆分&amp;&amp;多重背包&amp;&amp;背包问题总结篇">代码随想录第四十六天 | 单词拆分&amp;&amp;多重背包&amp;&amp;背包问题总结篇</a><time datetime="2023-12-27T12:48:26.850Z" title="发表于 2023-12-27 20:48:26">2023-12-27</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By 林重笑</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="95,158,160" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>
